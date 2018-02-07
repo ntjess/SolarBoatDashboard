@@ -1,0 +1,12 @@
+<RCC>
+    <qresource prefix="/">
+        <file>main.qml</file>
+        <file>menus/MainMenuBar.qml</file>
+        <file>main.cpp</file>
+        <file>map/MapComponent.qml</file>
+        <file>map/Marker.qml</file>
+        <file>debug/qrc_qml.cpp</file>
+        <file>release/qrc_qml.cpp</file>
+        <file>res/marker.png</file>
+    </qresource>
+</RCC>
