@@ -17,8 +17,6 @@ ApplicationWindow {
 
     MainMenuBar {
         id: appMainMenu
-        onGenerateRoute: map.calculateMarkerRoute()
-        onDeleteRoute: map.deleteRoute()
     }
 
     MapComponent {
