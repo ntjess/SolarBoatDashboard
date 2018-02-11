@@ -3,20 +3,58 @@ import QtLocation 5.9
 import QtQuick.Controls 2.2
 
 Map {
-    property int markerCounter: 0 // counter for total amount of markers. Resets to 0 when number of markers = 0
+    // counter for total amount of markers. Resets to 0 when number of markers = 0
+    property int markerCounter: 0
     property variant markers
     property variant mapItems
+    property int pressX: -1
+    property int pressY: -1
+    property int currentMarker: -1
     signal createMarker
 
     plugin: Plugin {
         name: "osm"
     }
 
+    MapPolyline {
+        id: mapLinePath
+        line.width: 2
+        line.color: 'green'
+    }
+
+    RouteModel {
+        id: routeModel
+        plugin: map.plugin
+        query: RouteQuery {
+            id: routeQuery
+        }
+        onStatusChanged: {
+            if (status == RouteModel.Ready) {
+                switch (count) {
+                case 0:
+                    // technically not an error
+                    map.routeError()
+                    break
+                case 1:
+                    map.showRouteList()
+                    break
+                }
+            } else if (status == RouteModel.Error) {
+                map.routeError()
+            }
+        }
+    }
+
     MouseArea {
         anchors.fill: parent
 
         onPressAndHold: {
+            // For some reason, the coordinates are offset from the click location.
+            // Rectify by adding 'fudge factor'
+            /*var fudgeX = 0.0001;
+            var fudgeY = fudgeX;*/
             var coords = map.toCoordinate(Qt.point(mouse.x, mouse.y))
+            console.log(mouse.x + ", " + mouse.y)
             addMarker(coords)
         }
     }
@@ -38,6 +76,30 @@ Map {
         }
         myArray.push(marker)
         markers = myArray
+    }
+
+    function deleteCurrMarker() {
+        //update list of markers
+        var myArray = []
+        var count = map.markers.length
+        for (var i = 0; i < count; i++) {
+            if (i != map.currentMarker)
+                myArray.push(map.markers[i])
+        }
+
+        map.removeMapItem(map.markers[map.currentMarker])
+        map.markers[map.currentMarker].destroy()
+        map.markers = myArray
+        map.markerCounter--
+    }
+
+    function calculateMarkerRoute() {
+        console.log('Calculated route')
+        var pathCoords = []
+        for (var i in map.markers) {
+            pathCoords.push(map.markers[i].coordinate)
+        }
+        mapLinePath.path = pathCoords
     }
 
     Component.onCompleted: {

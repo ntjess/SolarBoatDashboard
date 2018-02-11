@@ -13,10 +13,11 @@ ApplicationWindow {
     height: 480
     title: qsTr("Dashboard")
 
-    menuBar: mainMenu
+    menuBar: appMainMenu
 
     MainMenuBar {
-        id: mainMenu
+        id: appMainMenu
+        onGenerateRoute: map.calculateMarkerRoute()
     }
 
     MapComponent {

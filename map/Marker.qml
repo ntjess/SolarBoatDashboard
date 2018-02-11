@@ -1,4 +1,3 @@
-
 /****************************************************************************
 **
 ** Copyright (C) 2017 The Qt Company Ltd.
@@ -56,10 +55,6 @@ import QtLocation 5.6
 MapQuickItem {
     id: marker
     //! [mqi-top]
-    property alias lastMouseX: markerMouseArea.lastX
-    property alias lastMouseY: markerMouseArea.lastY
-
-    //! [mqi-anchor]
     anchorPoint.x: image.width / 4
     anchorPoint.y: image.height
 
@@ -80,7 +75,7 @@ MapQuickItem {
             drag.target: marker
             preventStealing: true
 
-            onPressed: {
+            onDoubleClicked: {
                 map.pressX = mouse.x
                 map.pressY = mouse.y
                 map.currentMarker = -1
@@ -90,6 +85,11 @@ MapQuickItem {
                         break
                     }
                 }
+                map.deleteCurrMarker()
+            }
+
+            onClicked: {
+                console.log(marker.coordinate)
             }
         }
 
@@ -107,7 +107,8 @@ MapQuickItem {
         }
 
         //! [mqi-closeimage]
+        Component.onCompleted: coordinate = map.toCoordinate(
+                                   Qt.point(markerMouseArea.mouseX,
+                                            markerMouseArea.mouseY))
     }
-
-}//! [mqi-close]
-
+} //! [mqi-close]
