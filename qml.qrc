@@ -6,9 +6,9 @@
         <file>map/MapComponent.qml</file>
         <file>map/Marker.qml</file>
         <file>res/marker.png</file>
-        <file>res/sampleData/sampleGpsData.txt</file>
         <file>res/curGPS.png</file>
         <file>map/CurrentLocation.qml</file>
         <file>menus/InfoBar.qml</file>
+        <file>res/sampleData/output.nmea</file>
     </qresource>
 </RCC>

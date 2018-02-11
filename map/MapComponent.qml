@@ -11,7 +11,7 @@ Map {
     property int distToNextMarker: 0
     property int currentTarget: 0 // What marker the GPS is aiming for next
     // Tolerance (m) acceptable to consider current location as reaching the next marker
-    property int distanceThreshold : 5
+    property int distanceThreshold : 10
     property int remainingDistance: 0
     property int pressX: -1
     property int pressY: -1
@@ -33,11 +33,10 @@ Map {
     PositionSource {
         id: gpsData
         active: true
-
-        nmeaSource: "../res/sampleData/sampleGpsData.txt"
-        updateInterval: 1000 // In milliseconds
+        nmeaSource: "../res/sampleData/output.nmea"
+        updateInterval: 3000 // In milliseconds
         onPositionChanged: {
-            console.log('Position changed')
+            map.updateDistances()
         }
     }
 
@@ -149,6 +148,11 @@ Map {
     }
 
     function updateDistances() {
+        if (!mapLinePath.visible) {
+            // No path. Don't calculate anything
+            return
+        }
+
         var gpsCoord = gpsData.position.coordinate
         var curDist = gpsCoord.distanceTo(map.markers[map.currentTarget].coordinate)
         // Work backwards to find total remaining distance
@@ -160,8 +164,8 @@ Map {
         // This will happen if GPS is close to another marker and there is still at least
         // one more waypoint past the objective
         if (totDist != 0 && curDist < map.distanceThreshold) {
-            map.currentMarker++;
-            curDist = gpsCoord.distanceTo(map.markers[map.currentMarker])
+            map.currentTarget++;
+            curDist = gpsCoord.distanceTo(map.markers[map.currentTarget])
         }
         totDist += curDist
         // Total distance should now be accurate regardless of whether a new objective was set
