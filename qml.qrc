@@ -9,5 +9,6 @@
         <file>res/sampleData/sampleGpsData.txt</file>
         <file>res/curGPS.png</file>
         <file>map/CurrentLocation.qml</file>
+        <file>menus/InfoBar.qml</file>
     </qresource>
 </RCC>

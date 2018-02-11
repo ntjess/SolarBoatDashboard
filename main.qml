@@ -19,8 +19,13 @@ ApplicationWindow {
         id: appMainMenu
     }
 
+    InfoBar {
+        id: info
+    }
+
     MapComponent {
         id: map
         anchors.fill: parent
+        anchors.topMargin: info.height
     }
 }
