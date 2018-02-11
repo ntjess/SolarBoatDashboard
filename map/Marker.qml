@@ -85,7 +85,8 @@ MapQuickItem {
                         break
                     }
                 }
-                map.deleteCurrMarker()
+                // Parameter says whether to delete all
+                map.deleteMarker()
             }
 
             onClicked: {

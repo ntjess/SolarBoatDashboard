@@ -78,7 +78,7 @@ Map {
         markers = myArray
     }
 
-    function deleteCurrMarker() {
+    function deleteMarker() {
         //update list of markers
         var myArray = []
         var count = map.markers.length
@@ -93,6 +93,17 @@ Map {
         map.markerCounter--
     }
 
+    function deleteAllMarkers() {
+        var newMarkers = []
+        var count = map.markers.length
+        for (var i = 0; i < count; i++) {
+            map.removeMapItem(map.markers[i])
+            map.markers[i].destroy()
+        }
+        map.markers = newMarkers
+        map.markerCounter = 0
+    }
+
     function calculateMarkerRoute() {
         console.log('Calculated route')
         var pathCoords = []
@@ -100,6 +111,11 @@ Map {
             pathCoords.push(map.markers[i].coordinate)
         }
         mapLinePath.path = pathCoords
+        mapLinePath.visible = true;
+    }
+
+    function deleteRoute() {
+        mapLinePath.visible = false
     }
 
     Component.onCompleted: {
