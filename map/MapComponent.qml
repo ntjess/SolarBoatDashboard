@@ -1,5 +1,6 @@
 import QtQuick 2.5
 import QtLocation 5.9
+import QtPositioning 5.6
 import QtQuick.Controls 2.2
 
 Map {
@@ -15,6 +16,7 @@ Map {
     plugin: Plugin {
         name: "osm"
     }
+    center: QtPositioning.coordinate(53.2012, 5.7999)
 
     MapPolyline {
         id: mapLinePath
