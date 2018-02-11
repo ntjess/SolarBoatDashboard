@@ -2,8 +2,6 @@ import QtQuick 2.5
 import QtQuick.Controls 2.3
 
 MenuBar {
-    signal generateRoute
-    signal deleteRoute
 
     id: mainMenu
     Menu {
@@ -11,11 +9,16 @@ MenuBar {
         title: qsTr("Tools")
         Action {
             text: qsTr("Generate Route")
-            onTriggered: mainMenu.generateRoute()
+            onTriggered: map.generateRoute()
         }
         Action {
             text: qsTr("Delete Route")
-            onTriggered: mainMenu.deleteRoute()
+            onTriggered: map.deleteRoute()
+        }
+        MenuSeparator {}
+        Action {
+            text: qsTr("Toggle Position")
+            onTriggered: map.displayGPSCoord()
         }
     }
 }

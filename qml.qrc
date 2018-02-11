@@ -5,8 +5,9 @@
         <file>main.cpp</file>
         <file>map/MapComponent.qml</file>
         <file>map/Marker.qml</file>
-        <file>debug/qrc_qml.cpp</file>
-        <file>release/qrc_qml.cpp</file>
         <file>res/marker.png</file>
+        <file>res/sampleData/sampleGpsData.txt</file>
+        <file>res/curGPS.png</file>
+        <file>map/CurrentLocation.qml</file>
     </qresource>
 </RCC>

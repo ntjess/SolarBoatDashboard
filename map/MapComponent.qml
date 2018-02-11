@@ -24,6 +24,11 @@ Map {
         line.color: 'green'
     }
 
+    MapItemView {
+        delegate: CurrentLocation {
+        }
+    }
+
     RouteModel {
         id: routeModel
         plugin: map.plugin
@@ -113,11 +118,15 @@ Map {
             pathCoords.push(map.markers[i].coordinate)
         }
         mapLinePath.path = pathCoords
-        mapLinePath.visible = true;
+        mapLinePath.visible = true
     }
 
     function deleteRoute() {
         mapLinePath.visible = false
+    }
+
+    function displayGPSCoord() {
+        console.log(currentLoc.gpsData.position.coordinate)
     }
 
     Component.onCompleted: {
