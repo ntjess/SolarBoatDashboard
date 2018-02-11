@@ -55,7 +55,7 @@ import QtLocation 5.6
 MapQuickItem {
     id: marker
     //! [mqi-top]
-    anchorPoint.x: image.width / 4
+    anchorPoint.x: image.width / 2
     anchorPoint.y: image.height
 
     sourceItem: Image {
