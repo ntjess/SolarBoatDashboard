@@ -17,8 +17,39 @@ MenuBar {
         }
         MenuSeparator {}
         Action {
-            text: qsTr("Toggle Position")
+            text: qsTr("Show/Hide position")
             onTriggered: map.displayGPSCoord()
+        }
+    }
+
+    MenuBarItem {
+        text: qsTr("Snap/Unsnap GPS")
+        onTriggered: {
+            //map.toggleFollowGPS()
+        }
+    }
+
+    Rectangle {
+        color: "light green"
+        parent: mainMenu
+        height: parent.height - 10
+        width: 100
+        anchors.right: parent.right
+        anchors.top: parent.top
+        anchors.rightMargin: 10
+        anchors.topMargin: 5
+        radius: 5
+
+        Text {
+            anchors.centerIn: parent
+            text: "Start GPS"
+            color: "white"
+            font.pointSize: 12
+        }
+
+        MouseArea {
+            anchors.fill: parent
+            onClicked: map.activateGPS()
         }
     }
 }

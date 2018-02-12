@@ -13,26 +13,30 @@ Map {
     // Tolerance (m) acceptable to consider current location as reaching the next marker
     property int distanceThreshold : 10
     property int remainingDistance: 0
+    property bool followingGPS: false
     property int pressX: -1
     property int pressY: -1
     property int currentMarker: -1
+    property variant leeuwarden: QtPositioning.coordinate(53.2012, 5.7999)
+
     signal createMarker
 
     plugin: Plugin {
         name: "osm"
     }
-    center: gpsData.position.coordinate//QtPositioning.coordinate(53.2012, 5.7999)
+    center: leeuwarden
     zoomLevel: 15
 
     MapPolyline {
         id: mapLinePath
         line.width: 2
         line.color: 'green'
+        visible: false // This will change once a route is added
     }
 
     PositionSource {
         id: gpsData
-        active: true
+        active: false
         nmeaSource: "../res/sampleData/output.nmea"
         updateInterval: 3000 // In milliseconds
         onPositionChanged: {
@@ -76,6 +80,21 @@ Map {
             var coords = map.toCoordinate(Qt.point(mouse.x, mouse.y))
             addMarker(coords)
         }
+    }
+
+    function toggleFollowGPS() {
+        if (followingGPS) {
+            map.center = map.center
+        } else {
+            activateGPS()
+            map.center = gpsData.position.coordinate
+        }
+
+        followingGPS = !followingGPS
+    }
+
+    function activateGPS() {
+        gpsData.active = true;
     }
 
     function addMarker(coords) {
