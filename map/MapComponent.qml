@@ -52,6 +52,32 @@ Map {
     CurrentLocation {
     }
 
+    MapQuickItem {
+        sourceItem: Text{
+            text: "A"
+            color:"red"
+            font.bold: true
+            styleColor: "#ECECEC"
+            style: Text.Outline
+            font.pointSize: 15
+        }
+        coordinate: QtPositioning.coordinate(53.2028, 5.788717) // GPS start
+        anchorPoint: Qt.point(sourceItem.width * 0.5, sourceItem.height * 0.5)
+    }
+
+    MapQuickItem {
+        sourceItem: Text{
+            text: "B"
+            color:"red"
+            font.bold: true
+            styleColor: "#ECECEC"
+            style: Text.Outline
+            font.pointSize: 15
+        }
+        coordinate: QtPositioning.coordinate(53.204367, 5.78875) // GPS end
+        anchorPoint: Qt.point(sourceItem.width * 0.5, sourceItem.height * 0.5)
+    }
+
     MouseArea {
         anchors.fill: parent
 
