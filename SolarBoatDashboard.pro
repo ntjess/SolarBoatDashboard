@@ -35,6 +35,5 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 DISTFILES += \
     res/curGPS.png \
-    res/curGPS.png \
     res/marker.png \
     res/sampleData/output.nmea
