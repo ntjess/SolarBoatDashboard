@@ -101,7 +101,7 @@ Map {
         map.markers[map.currentMarker].destroy()
         map.markers = myArray
         map.markerCounter--
-        map.generateRoute()
+        map.deleteRoute()
     }
 
     function deleteAllMarkers() {
