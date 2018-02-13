@@ -19,6 +19,12 @@ Rectangle {
         anchors.left: nextMarkerDistText.right
         anchors.leftMargin: 10
         text: "Total remaining distance: " + map.remainingDistance + " m"
+        id: velocityText
+        anchors.left: parent.left
+        anchors.bottom: parent.bottom
+        anchors.bottomMargin: 10
+        anchors.leftMargin: 10
+        text: map.finishedRace ? "DONE!" : "Velocity: " + map.speed + " m/s"
         font.pointSize: 14
     }
 }
