@@ -65,19 +65,8 @@ Map {
         }
     }
 
-    function toggleFollowGPS() {
-        if (followingGPS) {
-            map.center = map.center
-        } else {
-            activateGPS()
-            map.center = gpsData.position.coordinate
-        }
-
-        followingGPS = !followingGPS
-    }
-
     function activateGPS() {
-        gpsData.active = true;
+        gpsData.active = true
     }
 
     function addMarker(coords) {

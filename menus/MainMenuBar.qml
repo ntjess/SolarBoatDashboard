@@ -8,6 +8,11 @@ MenuBar {
         id: toolsMenu
         title: qsTr("Tools")
         Action {
+            text: qsTr("Delete All Markers")
+            onTriggered: map.deleteAllMarkers()
+        }
+        MenuSeparator {}
+        Action {
             text: qsTr("Generate Route")
             onTriggered: map.generateRoute()
         }
@@ -17,15 +22,15 @@ MenuBar {
         }
         MenuSeparator {}
         Action {
-            text: qsTr("Show/Hide position")
-            onTriggered: map.displayGPSCoord()
+            text: qsTr("Track Distance")
+            onTriggered: map.updateDistances()
         }
     }
 
     MenuBarItem {
         text: qsTr("Snap/Unsnap GPS")
         onTriggered: {
-            //map.toggleFollowGPS()
+            map.snapUnsnapGPS()
         }
     }
 
