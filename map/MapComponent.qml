@@ -4,22 +4,23 @@ import QtPositioning 5.6
 import QtQuick.Controls 2.2
 
 Map {
-    // counter for total amount of markers. Resets to 0 when number of markers = 0
+    // Markers
     property int markerCounter: 0
     property variant markers
-    property variant mapItems
+
+    // Path and distance
+    property bool finishedRace: false
     property int distToNextMarker: 0
     property int currentTarget: 0 // What marker the GPS is aiming for next
     // Tolerance (m) acceptable to consider current location as reaching the next marker
-    property int distanceThreshold : 10
+    property int distanceThreshold: 15
     property int remainingDistance: 0
+    property double speed: 0 // in m/s
+
+    // Snap/unsnap GPS
     property bool followingGPS: false
-    property int pressX: -1
-    property int pressY: -1
     property int currentMarker: -1
     property variant leeuwarden: QtPositioning.coordinate(53.2012, 5.7999)
-
-    signal createMarker
 
     plugin: Plugin {
         name: "osm"
@@ -40,33 +41,15 @@ Map {
         nmeaSource: "../res/sampleData/output.nmea"
         updateInterval: 3000 // In milliseconds
         onPositionChanged: {
-            map.updateDistances()
+            !finishedRace & map.updateDistances()
+            map.speed = position.speed // in m/s
+            if (map.followingGPS) {
+                map.center = position.coordinate
+            }
         }
     }
 
-    CurrentLocation {}
-
-    RouteModel {
-        id: routeModel
-        plugin: map.plugin
-        query: RouteQuery {
-            id: routeQuery
-        }
-        onStatusChanged: {
-            if (status == RouteModel.Ready) {
-                switch (count) {
-                case 0:
-                    // technically not an error
-                    map.routeError()
-                    break
-                case 1:
-                    map.showRouteList()
-                    break
-                }
-            } else if (status == RouteModel.Error) {
-                map.routeError()
-            }
-        }
+    CurrentLocation {
     }
 
     MouseArea {
@@ -151,19 +134,22 @@ Map {
         }
         mapLinePath.path = pathCoords
         mapLinePath.visible = true
-        map.updateDistances()
     }
 
     function deleteRoute() {
         mapLinePath.visible = false
-        map.currentTarget = 0;
+        map.currentTarget = 0
         map.remainingDistance = 0
         map.distToNextMarker = 0
-
     }
 
     function displayGPSCoord() {
         console.log(currentLoc.gpsData.position.coordinate)
+    }
+
+    function snapUnsnapGPS() {
+        map.followingGPS = !map.followingGPS
+        map.center = (map.followingGPS ? gpsData.position.coordinate : map.center)
     }
 
     function updateDistances() {
@@ -173,24 +159,30 @@ Map {
         }
 
         var gpsCoord = gpsData.position.coordinate
-        var curDist = gpsCoord.distanceTo(map.markers[map.currentTarget].coordinate)
+        var curDist = gpsCoord.distanceTo(
+                    map.markers[map.currentTarget].coordinate)
         // Work backwards to find total remaining distance
         var totDist = 0
         for (var i = map.markerCounter - 1; i > map.currentTarget; i--) {
             // This will add all distance from end point to current objective
-            totDist += map.markers[i].coordinate.distanceTo(map.markers[i-1].coordinate)
+            totDist += map.markers[i].coordinate.distanceTo(
+                        map.markers[i - 1].coordinate)
         }
         // This will happen if GPS is close to another marker and there is still at least
         // one more waypoint past the objective
         if (totDist != 0 && curDist < map.distanceThreshold) {
-            map.currentTarget++;
+            map.currentTarget++
             curDist = gpsCoord.distanceTo(map.markers[map.currentTarget])
+        } else if (curDist < map.distanceThreshold) {
+            // Within tolerance of final marker. Consider race finished
+            map.finishedRace = true
+            return
         }
+
         totDist += curDist
         // Total distance should now be accurate regardless of whether a new objective was set
         map.remainingDistance = totDist
         map.distToNextMarker = curDist
-
     }
 
     function setNewTarget(newTarget) {
@@ -200,6 +192,5 @@ Map {
 
     Component.onCompleted: {
         markers = []
-        mapItems = []
     }
 }

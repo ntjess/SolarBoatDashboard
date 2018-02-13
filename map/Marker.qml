@@ -65,8 +65,6 @@ MapQuickItem {
         opacity: markerMouseArea.pressed ? 0.6 : 1.0
         MouseArea {
             id: markerMouseArea
-            property int pressX: -1
-            property int pressY: -1
             property int jitterThreshold: 10
             property int lastX: -1
             property int lastY: -1
@@ -76,8 +74,6 @@ MapQuickItem {
             preventStealing: true
 
             onDoubleClicked: {
-                map.pressX = mouse.x
-                map.pressY = mouse.y
                 map.currentMarker = -1
                 for (var i = 0; i < map.markers.length; i++) {
                     if (marker == map.markers[i]) {
@@ -87,10 +83,6 @@ MapQuickItem {
                 }
                 // Parameter says whether to delete all
                 map.deleteMarker()
-            }
-
-            onClicked: {
-                console.log(marker.coordinate)
             }
         }
 
