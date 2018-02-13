@@ -10,7 +10,7 @@ Rectangle {
         id: nextMarkerDistText
         anchors.left: parent.left
         anchors.leftMargin: 10
-        text: "Distance to next marker: " + map.distToNextMarker + " m"
+        text: map.finishedRace ? "DONE!" : "Distance to next marker: " + map.distToNextMarker + " m"
         font.pointSize: 14
     }
 
@@ -18,7 +18,11 @@ Rectangle {
         id: reminingDistText
         anchors.left: nextMarkerDistText.right
         anchors.leftMargin: 10
-        text: "Total remaining distance: " + map.remainingDistance + " m"
+        text: map.finishedRace ? "DONE!" : "Total remaining distance: " + map.remainingDistance + " m"
+        font.pointSize: 14
+    }
+
+    Text {
         id: velocityText
         anchors.left: parent.left
         anchors.bottom: parent.bottom
