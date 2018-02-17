@@ -13,6 +13,11 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += main.cpp \
+    src/canBus.cpp \
+    src/CANInterface.cpp \
+    src/canSocket.cpp \
+    main.cpp \
+    src/dataprocessor.cpp
 
 OTHER_FILES += main.qml \
 map/*.qml \
@@ -37,3 +42,9 @@ DISTFILES += \
     res/curGPS.png \
     res/marker.png \
     res/sampleData/output.nmea
+
+HEADERS += \
+    include/canBus.h \
+    include/CANInterface.h \
+    include/canSocket.h \
+    include/dataprocessor.h
