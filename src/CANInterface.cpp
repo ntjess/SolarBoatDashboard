@@ -1,4 +1,4 @@
-#include "CANInterface.h"
+#include "include/CANInterface.h"
 
 CANInterface::CANInterface(DataProcessor *dataProcessor, bool simulateInput)
 {

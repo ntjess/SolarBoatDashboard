@@ -1,4 +1,4 @@
-QT += quick sql
+QT += quick
 CONFIG += c++11
 
 # The following define makes your compiler emit warnings if you use
@@ -12,14 +12,8 @@ DEFINES += QT_DEPRECATED_WARNINGS
 # You can also select to disable deprecated APIs only up to a certain version of Qt.
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
-SOURCES += main.cpp \
-    src/canBus.cpp \
-    src/CANInterface.cpp \
-    src/canSocket.cpp \
-    main.cpp \
-    src/dataprocessor.cpp \
-    src/gpslogger.cpp \
-    src/databaseConnection.cpp
+SOURCES += \
+    main.cpp
 
 OTHER_FILES += main.qml \
 map/*.qml \
@@ -45,10 +39,4 @@ DISTFILES += \
     res/marker.png \
     res/sampleData/output.nmea
 
-HEADERS += \
-    include/canBus.h \
-    include/CANInterface.h \
-    include/canSocket.h \
-    include/dataprocessor.h \
-    include/gpslogger.h \
-    include/databaseConnection.h
+HEADERS +=

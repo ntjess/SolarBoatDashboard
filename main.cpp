@@ -17,7 +17,7 @@ int main(int argc, char *argv[])
     if (engine.rootObjects().isEmpty())
         return -1;
 
-    CANInterface can = new CANInterface();
+    //CANInterface can = new CANInterface();
 
     return app.exec();
 }
