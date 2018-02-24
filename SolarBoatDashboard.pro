@@ -1,4 +1,4 @@
-QT += quick
+QT += quick sql
 CONFIG += c++11
 
 # The following define makes your compiler emit warnings if you use
@@ -17,7 +17,9 @@ SOURCES += main.cpp \
     src/CANInterface.cpp \
     src/canSocket.cpp \
     main.cpp \
-    src/dataprocessor.cpp
+    src/dataprocessor.cpp \
+    src/gpslogger.cpp \
+    src/databaseConnection.cpp
 
 OTHER_FILES += main.qml \
 map/*.qml \
@@ -47,4 +49,6 @@ HEADERS += \
     include/canBus.h \
     include/CANInterface.h \
     include/canSocket.h \
-    include/dataprocessor.h
+    include/dataprocessor.h \
+    include/gpslogger.h \
+    include/databaseConnection.h

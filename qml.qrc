@@ -10,5 +10,7 @@
         <file>map/CurrentLocation.qml</file>
         <file>menus/InfoBar.qml</file>
         <file>res/sampleData/output.nmea</file>
+        <file>include/dataprocessor.h</file>
+        <file>include/databaseconnection.h</file>
     </qresource>
 </RCC>
