@@ -139,24 +139,35 @@ Map {
         }
         map.markers = newMarkers
         map.markerCounter = 0
-        map.deleteRoute()
-    }
-
-    function generateRoute() {
-        var pathCoords = []
-        for (var i in map.markers) {
-            pathCoords.push(map.markers[i].coordinate)
-        }
-        mapLinePath.path = pathCoords
-        mapLinePath.visible = true
-    }
-
-    function deleteRoute() {
         mapLinePath.visible = false
-        map.currentTarget = 0
-        map.remainingDistance = 0
-        map.distToNextMarker = 0
     }
+
+    function toggleMarkers() {
+        var visibility = map.markers[0].visible;
+        for (var el in map.markers) {
+            map.markers[el].visible = !visibility
+        }
+    }
+
+    function toggleRoute() {
+        if (mapLinePath.visible == true) {
+            mapLinePath.visible = false
+        } else {
+            var pathCoords = []
+            for (var i in map.markers) {
+                pathCoords.push(map.markers[i].coordinate)
+            }
+            mapLinePath.path = pathCoords
+            mapLinePath.visible = true
+        }
+    }
+
+//    function deleteRoute() {
+//        mapLinePath.visible = false
+//        map.currentTarget = 0
+//        map.remainingDistance = 0
+//        map.distToNextMarker = 0
+//    }
 
     function displayGPSCoord() {
         console.log(currentLoc.gpsData.position.coordinate)
