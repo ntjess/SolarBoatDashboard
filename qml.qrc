@@ -11,6 +11,20 @@
         <file>menus/InfoBar.qml</file>
         <file>res/sampleData/output.nmea</file>
         <file>include/dataprocessor.h</file>
-        <file>include/databaseconnection.h</file>
+        <file>include/canBus.h</file>
+        <file>include/CANInterface.h</file>
+        <file>include/CanNodeParser.h</file>
+        <file>include/canSocket.h</file>
+        <file>res/database/paths.db</file>
+        <file>src/canBus.cpp</file>
+        <file>src/CANInterface.cpp</file>
+        <file>src/canSocket.cpp</file>
+        <file>src/DatabaseConnection.cpp</file>
+        <file>src/dataprocessor.cpp</file>
+        <file>src/DatabaseMarker.cpp</file>
+        <file>include/DatabaseMarker.h</file>
+        <file>include/DatabaseMarkerPath.h</file>
+        <file>include/DatabaseConnection.h</file>
+        <file>paths.db</file>
     </qresource>
 </RCC>

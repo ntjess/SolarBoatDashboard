@@ -1,4 +1,5 @@
-QT += quick
+QT += quick sql
+QT -= gui
 CONFIG += c++11
 
 # The following define makes your compiler emit warnings if you use
@@ -13,7 +14,10 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
-    main.cpp
+    main.cpp \
+    src/DatabaseConnection.cpp \
+    src/DatabaseMarker.cpp \
+    src/DatabaseMarkerPath.cpp
 
 OTHER_FILES += main.qml \
 map/*.qml \
@@ -37,6 +41,10 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 DISTFILES += \
     res/curGPS.png \
     res/marker.png \
+    res/database/paths.db \
     res/sampleData/output.nmea
 
-HEADERS +=
+HEADERS += \
+    include/DatabaseMarker.h \
+    include/DatabaseConnection.h \
+    include/DatabaseMarkerPath.h

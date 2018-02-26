@@ -1,12 +1,25 @@
 #include "include/databaseConnection.h"
 
-DatabaseConnection::DatabaseConnection(const QString &path) {
-	database = QSqlDatabase::addDatabase("QSQLITE");
-	database.setDatabaseName(path);
 
+DatabaseConnection::DatabaseConnection() {
+}
+
+void DatabaseConnection::initConnection(const QString &path) {
+	database = QSqlDatabase::addDatabase("QSQLITE");
+	qDebug() << "addDatabase";
+	database.setDatabaseName(path);
+	qDebug() << "setDatabaseName";
 	if (!database.open()) {
-		qDebug() << "Cannot connect to database " + path;
+		qDebug() << "Error: " << database.lastError().text();
 	} else {
-		qDebug() << "Successful conenction to " + path;
+		qDebug() << "Successful conenction to " << path << endl;
 	}
+}
+
+void DatabaseConnection::closeConnection() {
+	database.close();
+}
+
+bool DatabaseConnection::isConnected() {
+	return database.isOpen();
 }

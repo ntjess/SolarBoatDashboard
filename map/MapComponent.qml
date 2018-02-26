@@ -205,6 +205,20 @@ Map {
         map.updateDistances()
     }
 
+    function saveMarkers(pathName) {
+        // Put each portion of the current markers in a list to add them to db
+        var lat = [];
+        var lon = [];
+        var marker_num = [];
+        for (var i in map.markers) {
+            var marker = map.markers[i];
+            lat.push(marker.coordinate.latitude)
+            lon.push(marker.coordinate.longitude)
+            marker_num.push(Number(i)+1)
+        }
+        DatabaseMarkerPath.createPath(pathName, lat, lon, marker_num)
+    }
+
     Component.onCompleted: {
         markers = []
     }

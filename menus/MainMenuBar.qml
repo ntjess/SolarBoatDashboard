@@ -1,36 +1,92 @@
 import QtQuick 2.5
 import QtQuick.Controls 2.3
+import QtQuick.Dialogs 1.2
 
 MenuBar {
-
     id: mainMenu
+
+    MessageDialog {
+        id: deleteMarkersDialog
+        title: "Confirm Delete"
+        text: "Are you sure you want to do this?"
+        standardButtons: StandardButton.Cancel | StandardButton.Yes
+        onAccepted: map.deleteAllMarkers()
+    }
+
+    Dialog {
+        id: pathNameDialog
+        height: 120
+        title: "New Path Name"
+        standardButtons: StandardButton.Save | StandardButton.Cancel
+
+        Column {
+            anchors.fill: parent
+            anchors.margins: 5
+            spacing: 3
+
+            Rectangle {
+                height: 25
+                width: parent.width
+                color: "white"
+                border.width: 1
+                border.color: "black"
+
+                TextInput {
+                    id: pathName
+                    anchors.fill: parent
+                    anchors.margins: 4
+                    mouseSelectionMode: TextInput.SelectCharacters
+                    selectByMouse: true
+                }
+            }
+        }
+
+        onAccepted: {
+            console.log(pathName.displayText)
+            map.saveMarkers(pathName.displayText)
+        }
+    }
+
     Menu {
         id: toolsMenu
-        title: qsTr("Tools")
+        title: qsTr("Path Tools")
         Action {
-            text: qsTr("Delete All Markers")
-            onTriggered: map.deleteAllMarkers()
-        }
-        MenuSeparator {}
-        Action {
-            text: qsTr("Generate Route")
-            onTriggered: map.generateRoute()
+            text: qsTr("Show/Hide Route")
+            onTriggered: map.toggleRoute()
         }
         Action {
-            text: qsTr("Delete Route")
-            onTriggered: map.deleteRoute()
+            text: qsTr("Save Path")
+            onTriggered: pathNameDialog.open()
         }
-        MenuSeparator {}
+
         Action {
             text: qsTr("Track Distance")
             onTriggered: map.updateDistances()
         }
     }
 
-    MenuBarItem {
-        text: qsTr("Snap/Unsnap GPS")
-        onTriggered: {
-            map.snapUnsnapGPS()
+    Menu {
+        id: markerTools
+        title: qsTr("Marker Tools")
+        Action {
+            text: qsTr("Show/Hide Markers")
+            onTriggered: map.toggleMarkers()
+        }
+
+        MenuSeparator {
+        }
+        Action {
+            text: qsTr("Delete All Markers")
+            onTriggered: deleteMarkersDialog.open()
+        }
+    }
+
+    Menu {
+        id: mapTools
+        title: qsTr("Map Tools")
+        Action {
+            text: qsTr("Snap/Unsnap to GPS")
+            onTriggered: map.snapUnsnapGPS()
         }
     }
 
