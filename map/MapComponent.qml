@@ -3,6 +3,8 @@ import QtLocation 5.9
 import QtPositioning 5.6
 import QtQuick.Controls 2.2
 
+import "../helpers"
+
 Map {
     // Markers
     property int markerCounter: 0
@@ -53,9 +55,9 @@ Map {
     }
 
     MapQuickItem {
-        sourceItem: Text{
+        sourceItem: Text {
             text: "A"
-            color:"red"
+            color: "red"
             font.bold: true
             styleColor: "#ECECEC"
             style: Text.Outline
@@ -66,9 +68,9 @@ Map {
     }
 
     MapQuickItem {
-        sourceItem: Text{
+        sourceItem: Text {
             text: "B"
-            color:"red"
+            color: "red"
             font.bold: true
             styleColor: "#ECECEC"
             style: Text.Outline
@@ -127,7 +129,7 @@ Map {
         map.markers[map.currentMarker].destroy()
         map.markers = myArray
         map.markerCounter--
-        map.deleteRoute()
+        map.toggleRoute()
     }
 
     function deleteAllMarkers() {
@@ -143,7 +145,7 @@ Map {
     }
 
     function toggleMarkers() {
-        var visibility = map.markers[0].visible;
+        var visibility = map.markers[0].visible
         for (var el in map.markers) {
             map.markers[el].visible = !visibility
         }
@@ -162,13 +164,13 @@ Map {
         }
     }
 
-//    function deleteRoute() {
-//        mapLinePath.visible = false
-//        map.currentTarget = 0
-//        map.remainingDistance = 0
-//        map.distToNextMarker = 0
-//    }
 
+    //    function deleteRoute() {
+    //        mapLinePath.visible = false
+    //        map.currentTarget = 0
+    //        map.remainingDistance = 0
+    //        map.distToNextMarker = 0
+    //    }
     function displayGPSCoord() {
         console.log(currentLoc.gpsData.position.coordinate)
     }
@@ -214,20 +216,6 @@ Map {
     function setNewTarget(newTarget) {
         map.currentTarget = newTarget
         map.updateDistances()
-    }
-
-    function saveMarkers(pathName) {
-        // Put each portion of the current markers in a list to add them to db
-        var lat = [];
-        var lon = [];
-        var marker_num = [];
-        for (var i in map.markers) {
-            var marker = map.markers[i];
-            lat.push(marker.coordinate.latitude)
-            lon.push(marker.coordinate.longitude)
-            marker_num.push(Number(i)+1)
-        }
-        DatabaseMarkerPath.createPath(pathName, lat, lon, marker_num)
     }
 
     Component.onCompleted: {
