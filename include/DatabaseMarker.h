@@ -18,7 +18,7 @@ public:
 	// List of markers is already available to the C++ side
 	Q_INVOKABLE bool createPathMarkers(QVariantList path_id, QVariantList lat,
 			QVariantList lon, QVariantList marker_num);
-	Q_INVOKABLE QVariant readPathMarkers(int path_id);
+	Q_INVOKABLE QVariantList readPathMarkers(int path_id);
 	Q_INVOKABLE bool deletePathMarkers(int path_id);
 
 	// Under the current paradigm, it makes the most sense to just delete the

@@ -2,15 +2,24 @@ import QtQuick 2.5
 import QtQuick.Controls 2.3
 import QtQuick.Dialogs 1.2
 
+import "../helpers"
+
 MenuBar {
     id: mainMenu
+    signal loadPath(int pathId)
+
+    onLoadPath: mapHelper.loadPath(pathId)
+    MainMenuHelper {
+        // Gain access to menu helper functions
+        id: mainMenuHelper
+    }
 
     MessageDialog {
         id: deleteMarkersDialog
         title: "Confirm Delete"
         text: "Are you sure you want to do this?"
         standardButtons: StandardButton.Cancel | StandardButton.Yes
-        onAccepted: map.deleteAllMarkers()
+        onYes: map.deleteAllMarkers()
     }
 
     Dialog {
@@ -42,8 +51,9 @@ MenuBar {
         }
 
         onAccepted: {
-            console.log(pathName.displayText)
-            map.saveMarkers(pathName.displayText)
+            var id = mapHelper.savePath(pathName.displayText)
+            var pathData = [[id], [pathName.displayText]]
+            mainMenuHelper.addToLoadPaths(pathData)
         }
     }
 
@@ -57,11 +67,20 @@ MenuBar {
         Action {
             text: qsTr("Save Path")
             onTriggered: pathNameDialog.open()
+            on
         }
 
         Action {
             text: qsTr("Track Distance")
             onTriggered: map.updateDistances()
+        }
+    }
+
+    Menu {
+        id: dbPaths
+        title: qsTr("Load Path")
+        Component.onCompleted: {
+            mainMenuHelper.addToLoadPaths(DatabaseMarkerPath.readAllPaths())
         }
     }
 

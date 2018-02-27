@@ -6,46 +6,54 @@
 bool DatabaseMarker::createPathMarkers(QVariantList path_id, QVariantList lat,
 												QVariantList lon, QVariantList marker_num) {
 	bool success = false;
-	QSqlQuery query;
-	query.prepare(createMarkerStr);
-	qDebug() << "valid: " << query.isValid();
-	qDebug() << " : " << query.lastError().text();
-	query.addBindValue(path_id);
-	query.addBindValue(lat);
-	query.addBindValue(lon);
-	query.addBindValue(marker_num);
-	if (query.execBatch()) {
+	QSqlQuery q;
+	q.prepare(createMarkerStr);
+	qDebug() << "valid: " << q.isValid();
+	qDebug() << " : " << q.lastError().text();
+	q.addBindValue(path_id);
+	q.addBindValue(lat);
+	q.addBindValue(lon);
+	q.addBindValue(marker_num);
+	if (q.execBatch()) {
 		success = true;
 	} else {
-		qDebug() << "createMarker error: " << query.lastError().text();
+		qDebug() << "createMarker error: " << q.lastError().text();
 		success = false;
 	}
 
 	return success;
 }
 
-QVariant DatabaseMarker::readPathMarkers(int path_id) {
-	QVariant markers;
-	QSqlQuery query;
-	query.prepare(createMarkerStr);
-	query.addBindValue(path_id);
-	if (query.exec()) {
+QVariantList DatabaseMarker::readPathMarkers(int path_id) {
+	QVariantList markers, markerData;
+	QSqlQuery q;
+	q.prepare(readPathMarkersStr);
+	q.addBindValue(path_id);
+	if (q.exec()) {
+		while (q.next()) {
+			markerData << q.value(2).toDouble();
+			markerData << q.value(3).toDouble();
+			markerData << q.value(4).toInt();
+			markers << QVariant(markerData);
+			markerData.clear();
+		}
 	} else {
-		qDebug() << "readPathMarkers error: " << query.lastError().text();
+		qDebug() << "readPathMarkers error: " << q.lastError().text();
+		return QVariantList();
 	}
 	return markers;
 }
 
 bool DatabaseMarker::deletePathMarkers(int path_id) {
 	bool success = false;
-	QSqlQuery query;
-	query.prepare(deleteMarkerStr);
-	query.addBindValue(path_id);
+	QSqlQuery q;
+	q.prepare(deleteMarkerStr);
+	q.addBindValue(path_id);
 
-	if (query.exec()) {
+	if (q.exec()) {
 		success = true;
 	} else {
-		qDebug() << "DeleteMarker error: " << query.lastError().text();
+		qDebug() << "DeleteMarker error: " << q.lastError().text();
 	}
 
 	return success;

@@ -6,6 +6,8 @@ import QtLocation 5.6
 
 import "map"
 import "menus"
+import "helpers"
+
 
 ApplicationWindow {
     visible: true
@@ -27,5 +29,8 @@ ApplicationWindow {
         id: map
         anchors.fill: parent
         anchors.topMargin: info.height
+        MapHelper {
+            id: mapHelper
+        }
     }
 }

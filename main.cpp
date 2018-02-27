@@ -18,9 +18,11 @@ int main(int argc, char *argv[])
     QQmlApplicationEngine engine;
 
 		DatabaseMarkerPath * dbMarkerPath = new DatabaseMarkerPath;
+		DatabaseMarker *dbMarker = new DatabaseMarker;
 
 		// Allow QML to access necessary C++ classes
 		engine.rootContext()->setContextProperty("DatabaseMarkerPath", dbMarkerPath);
+		engine.rootContext()->setContextProperty("DatabaseMarker", dbMarker);
 		// Create a database connection
 		DatabaseConnection *dbcon = new DatabaseConnection();
 		dbcon->initConnection();

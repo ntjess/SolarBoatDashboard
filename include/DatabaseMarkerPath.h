@@ -19,6 +19,9 @@ public:
 	Q_INVOKABLE bool updatePath(int id);
 	Q_INVOKABLE bool deletePath(int id);
 
+	// Used on QML side for generating menu of paths
+	Q_INVOKABLE QVariantList readAllPaths();
+
 private:
 	// SQL strings to create database objects
 	const QString TABLE = "marker_paths";
@@ -30,6 +33,7 @@ private:
 			+ " SET lat = :lat, lon = :lon, marker_num = :marker_num";
 	const QString deleteMarkerPathStr = "DELETE FROM " + DatabaseMarkerPath::TABLE
 			+ " WHERE id = (:id)";
+	const QString readAllPathsStr = "SELECT * FROM " + DatabaseMarkerPath::TABLE;
 };
 
 #endif // DatabaseMarkerPath_H

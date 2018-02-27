@@ -1,4 +1,4 @@
-QT += quick sql
+QT += quick sql widgets
 QT -= gui
 CONFIG += c++11
 
@@ -23,7 +23,8 @@ OTHER_FILES += main.qml \
 map/*.qml \
 res/*.qml \
 res/*.png \
-menus/*.qml
+menus/*.qml \
+helpers/*.qml
 
 RESOURCES += qml.qrc
 

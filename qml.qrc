@@ -25,6 +25,9 @@
         <file>include/DatabaseMarker.h</file>
         <file>include/DatabaseMarkerPath.h</file>
         <file>include/DatabaseConnection.h</file>
-        <file>paths.db</file>
+        <file>src/DatabaseMarkerPath.cpp</file>
+        <file>helpers/MainMenuHelper.qml</file>
+        <file>menus/IdAction.qml</file>
+        <file>helpers/MapHelper.qml</file>
     </qresource>
 </RCC>
