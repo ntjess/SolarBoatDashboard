@@ -38,7 +38,7 @@ return false;
 }
 
 bool DatabaseMarkerPath::deletePath(int id) {
-return false;
+    // Make sure to delete path and all markers associated with it
 }
 
 QVariantList DatabaseMarkerPath::readAllPaths() {

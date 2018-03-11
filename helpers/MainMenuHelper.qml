@@ -10,7 +10,7 @@ Item {
             // IdAction is simply an action with an additional property that
             // holds the path id
             var actionId = pathData[0][i];
-            var curAction = Qt.createQmlObject('import "../menus"; IdAction {onTriggered: mainMenu.loadPath(' + actionId + ')}', dbPaths)
+            var curAction = Qt.createQmlObject('import "../menus"; IdAction {actionId = ' + actionId, dbPaths)
             curAction.text = pathData[1][i]
             // Action is now ready to place in menu
             dbPaths.addAction(curAction)
