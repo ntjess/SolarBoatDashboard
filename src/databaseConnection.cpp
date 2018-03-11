@@ -6,9 +6,7 @@ DatabaseConnection::DatabaseConnection() {
 
 void DatabaseConnection::initConnection(const QString &path) {
 	database = QSqlDatabase::addDatabase("QSQLITE");
-	qDebug() << "addDatabase";
 	database.setDatabaseName(path);
-	qDebug() << "setDatabaseName";
 	if (!database.open()) {
 		qDebug() << "Error: " << database.lastError().text();
 	} else {
