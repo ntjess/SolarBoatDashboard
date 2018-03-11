@@ -29,5 +29,7 @@
         <file>helpers/MainMenuHelper.qml</file>
         <file>menus/IdAction.qml</file>
         <file>helpers/MapHelper.qml</file>
+        <file>dialogs/DeleteDialog.qml</file>
+        <file>dialogs/NewPathDialog.qml</file>
     </qresource>
 </RCC>

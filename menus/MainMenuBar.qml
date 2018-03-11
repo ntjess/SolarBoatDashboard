@@ -3,6 +3,7 @@ import QtQuick.Controls 2.3
 import QtQuick.Dialogs 1.2
 
 import "../helpers"
+import "../dialogs"
 
 MenuBar {
     id: mainMenu
@@ -14,45 +15,16 @@ MenuBar {
         id: mainMenuHelper
     }
 
-    MessageDialog {
+    DeleteDialog {
         id: deleteMarkersDialog
-        title: "Confirm Delete"
-        text: "Are you sure you want to do this?"
-        standardButtons: StandardButton.Cancel | StandardButton.Yes
         onYes: map.deleteAllMarkers()
     }
 
-    Dialog {
+    NewPathDialog {
         id: pathNameDialog
-        height: 120
-        title: "New Path Name"
-        standardButtons: StandardButton.Save | StandardButton.Cancel
-
-        Column {
-            anchors.fill: parent
-            anchors.margins: 5
-            spacing: 3
-
-            Rectangle {
-                height: 25
-                width: parent.width
-                color: "white"
-                border.width: 1
-                border.color: "black"
-
-                TextInput {
-                    id: pathName
-                    anchors.fill: parent
-                    anchors.margins: 4
-                    mouseSelectionMode: TextInput.SelectCharacters
-                    selectByMouse: true
-                }
-            }
-        }
-
         onAccepted: {
-            var id = mapHelper.savePath(pathName.displayText)
-            var pathData = [[id], [pathName.displayText]]
+            var id = mapHelper.savePath(pathNameDialog.newPathName)
+            var pathData = [[id], [pathNameDialog.newPathName]]
             mainMenuHelper.addToLoadPaths(pathData)
         }
     }
@@ -67,7 +39,6 @@ MenuBar {
         Action {
             text: qsTr("Save Path")
             onTriggered: pathNameDialog.open()
-            on
         }
 
         Action {
