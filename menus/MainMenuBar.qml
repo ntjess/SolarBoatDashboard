@@ -8,9 +8,9 @@ import "../dialogs"
 MenuBar {
     id: mainMenu
 
-    MainMenuHelper {
+    MenuHelper {
         // Gain access to menu helper functions
-        id: mainMenuHelper
+        id: menuHelper
     }
 
     DeleteDialog {
@@ -52,7 +52,7 @@ MenuBar {
         id: dbPaths
         title: qsTr("Load Path")
         Component.onCompleted: {
-            mainMenuHelper.addToLoadPaths(DatabaseMarkerPath.readAllPaths())
+            menuHelper.addToLoadPaths(DatabaseMarkerPath.readAllPaths())
         }
     }
 

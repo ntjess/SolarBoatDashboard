@@ -26,10 +26,10 @@
         <file>include/DatabaseMarkerPath.h</file>
         <file>include/DatabaseConnection.h</file>
         <file>src/DatabaseMarkerPath.cpp</file>
-        <file>helpers/MainMenuHelper.qml</file>
         <file>menus/IdAction.qml</file>
         <file>helpers/MapHelper.qml</file>
         <file>dialogs/DeleteDialog.qml</file>
         <file>dialogs/NewPathDialog.qml</file>
+        <file>helpers/MenuHelper.qml</file>
     </qresource>
 </RCC>
