@@ -23,11 +23,12 @@ SOURCES += \
     src/DatabaseMarkerPath.cpp
 
 OTHER_FILES += main.qml \
+dialogs/*.qml \
+helpers/*.qml \
+menus/*.qml \
 map/*.qml \
 res/*.qml \
-res/*.png \
-menus/*.qml \
-helpers/*.qml
+res/*.png
 
 RESOURCES += qml.qrc
 
@@ -43,8 +44,6 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 DISTFILES += \
-    res/curGPS.png \
-    res/marker.png \
     res/database/paths.db \
     res/sampleData/output.nmea
 
