@@ -14,7 +14,7 @@ MenuItem {
             map.helper.loadPath(actionId)
             // Collapse the main menu after triggering. This doesn't happen
             // automatically with a propagated trigger
-            dbPaths.cascade = false;
+            dbPaths.close();
         }
     }
     function deletePaths() {
