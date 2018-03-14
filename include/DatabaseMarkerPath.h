@@ -27,11 +27,11 @@ private:
 	const QString TABLE = "marker_paths";
 	const QString createPathStr = "INSERT INTO " + DatabaseMarkerPath::TABLE
 		+ " (name) VALUES (?)";
-	const QString readMarkerPathsStr = "SELECT * FROM" + DatabaseMarkerPath::TABLE
+	const QString readPathsStr = "SELECT * FROM" + DatabaseMarkerPath::TABLE
 			+ " WHERE path_id = :path_id";
-	const QString updateMarkerPathStr = "UPDATE" + DatabaseMarkerPath::TABLE
+	const QString updatePathStr = "UPDATE" + DatabaseMarkerPath::TABLE
 			+ " SET lat = :lat, lon = :lon, marker_num = :marker_num";
-	const QString deleteMarkerPathStr = "DELETE FROM " + DatabaseMarkerPath::TABLE
+	const QString deletePathStr = "DELETE FROM " + DatabaseMarkerPath::TABLE
 			+ " WHERE id = (:id)";
 	const QString readAllPathsStr = "SELECT * FROM " + DatabaseMarkerPath::TABLE;
 };

@@ -47,7 +47,7 @@ QVariantList DatabaseMarker::readPathMarkers(int path_id) {
 bool DatabaseMarker::deletePathMarkers(int path_id) {
 	bool success = false;
 	QSqlQuery q;
-	q.prepare(deleteMarkerStr);
+	q.prepare(deleteMarkerPathStr);
 	q.addBindValue(path_id);
 
 	if (q.exec()) {

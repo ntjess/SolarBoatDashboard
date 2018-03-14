@@ -35,8 +35,8 @@ private:
 			+ " WHERE path_id = :path_id";
 	const QString updateMarkerStr = "UPDATE " + DatabaseMarker::TABLE
 			+ " set lat = :lat, lon = :lon, marker_num = :marker_num";
-	const QString deleteMarkerStr = "DELETE FROM " + DatabaseMarker::TABLE
-			+ " WHERE id = (:id)";
+	const QString deleteMarkerPathStr = "DELETE FROM " + DatabaseMarker::TABLE
+			+ " WHERE path_id = (:path_id)";
 
 };
 #endif // DATABASEMARKER_H
