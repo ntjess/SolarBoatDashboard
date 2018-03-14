@@ -24,11 +24,18 @@ Map {
     property int currentMarker: -1
     property variant leeuwarden: QtPositioning.coordinate(53.2012, 5.7999)
 
+    // Expose the map helper to other qml components
+    property alias helper: mapHelper
+
     plugin: Plugin {
         name: "osm"
     }
     center: leeuwarden
     zoomLevel: 15
+
+    MapHelper {
+        id: mapHelper
+    }
 
     MapPolyline {
         id: mapLinePath
@@ -43,7 +50,7 @@ Map {
         nmeaSource: "../res/sampleData/output.nmea"
         updateInterval: 3000 // In milliseconds
         onPositionChanged: {
-            !finishedRace & map.updateDistances()
+            !finishedRace & helper.updateDistances()
             map.speed = position.speed // in m/s
             if (map.followingGPS) {
                 map.center = position.coordinate
@@ -89,133 +96,8 @@ Map {
             /*var fudgeX = 0.0001;
             var fudgeY = fudgeX;*/
             var coords = map.toCoordinate(Qt.point(mouse.x, mouse.y))
-            addMarker(coords)
+            mapHelper.addMarker(coords)
         }
-    }
-
-    function activateGPS() {
-        gpsData.active = true
-    }
-
-    function addMarker(coords) {
-        // If markers isn't initialized, make it
-        map.markers = map.markers || []
-        var count = map.markers.length
-        markerCounter++
-        var marker = Qt.createQmlObject('Marker {}', map)
-        map.addMapItem(marker)
-        marker.z = map.z + 1
-        marker.coordinate = coords
-
-        //update list of markers
-        var myArray = []
-        for (var i = 0; i < count; i++) {
-            myArray.push(markers[i])
-        }
-        myArray.push(marker)
-        markers = myArray
-    }
-
-    function deleteMarker() {
-        //update list of markers
-        var myArray = []
-        var count = map.markers.length
-        for (var i = 0; i < count; i++) {
-            if (i != map.currentMarker)
-                myArray.push(map.markers[i])
-        }
-
-        map.removeMapItem(map.markers[map.currentMarker])
-        map.markers[map.currentMarker].destroy()
-        map.markers = myArray
-        map.markerCounter--
-        map.toggleRoute()
-    }
-
-    function deleteAllMarkers() {
-        var newMarkers = []
-        var count = map.markers.length
-        for (var i = 0; i < count; i++) {
-            map.removeMapItem(map.markers[i])
-            map.markers[i].destroy()
-        }
-        map.markers = newMarkers
-        map.markerCounter = 0
-        mapLinePath.visible = false
-    }
-
-    function toggleMarkers() {
-        var visibility = map.markers[0].visible
-        for (var el in map.markers) {
-            map.markers[el].visible = !visibility
-        }
-    }
-
-    function toggleRoute() {
-        if (mapLinePath.visible == true) {
-            mapLinePath.visible = false
-        } else {
-            var pathCoords = []
-            for (var i in map.markers) {
-                pathCoords.push(map.markers[i].coordinate)
-            }
-            mapLinePath.path = pathCoords
-            mapLinePath.visible = true
-        }
-    }
-
-
-    //    function deleteRoute() {
-    //        mapLinePath.visible = false
-    //        map.currentTarget = 0
-    //        map.remainingDistance = 0
-    //        map.distToNextMarker = 0
-    //    }
-    function displayGPSCoord() {
-        console.log(currentLoc.gpsData.position.coordinate)
-    }
-
-    function snapUnsnapGPS() {
-        map.followingGPS = !map.followingGPS
-        map.center = (map.followingGPS ? gpsData.position.coordinate : map.center)
-    }
-
-    function updateDistances() {
-        if (!mapLinePath.visible) {
-            // No path. Don't calculate anything
-            return
-        }
-
-        var gpsCoord = gpsData.position.coordinate
-        var curDist = gpsCoord.distanceTo(
-                    map.markers[map.currentTarget].coordinate)
-        // Work backwards to find total remaining distance
-        var totDist = 0
-        for (var i = map.markerCounter - 1; i > map.currentTarget; i--) {
-            // This will add all distance from end point to current objective
-            totDist += map.markers[i].coordinate.distanceTo(
-                        map.markers[i - 1].coordinate)
-        }
-        // This will happen if GPS is close to another marker and there is still at least
-        // one more waypoint past the objective
-        if (totDist != 0 && curDist < map.distanceThreshold) {
-            map.currentTarget++
-            curDist = gpsCoord.distanceTo(map.markers[map.currentTarget])
-        } else if (curDist < map.distanceThreshold) {
-            // Within tolerance of final marker. Consider race finished
-            map.finishedRace = true
-            return
-        }
-
-        totDist += curDist
-        // Total distance should now be accurate regardless of whether a new objective was set
-        map.remainingDistance = totDist
-        map.distToNextMarker = curDist
-    }
-
-    function setNewTarget(newTarget) {
-        map.currentTarget = newTarget
-        map.updateDistances()
     }
 
     Component.onCompleted: {

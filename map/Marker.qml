@@ -82,7 +82,7 @@ MapQuickItem {
                     }
                 }
                 // Parameter says whether to delete all
-                map.deleteMarker()
+                map.helper.deleteMarker()
             }
         }
 

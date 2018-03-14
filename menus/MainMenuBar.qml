@@ -7,9 +7,7 @@ import "../dialogs"
 
 MenuBar {
     id: mainMenu
-    signal loadPath(int pathId)
 
-    onLoadPath: mapHelper.loadPath(pathId)
     MainMenuHelper {
         // Gain access to menu helper functions
         id: mainMenuHelper
@@ -17,15 +15,15 @@ MenuBar {
 
     DeleteDialog {
         id: deleteMarkersDialog
-        onYes: map.deleteAllMarkers()
+        onYes: map.helper.deleteAllMarkers()
     }
 
     NewPathDialog {
         id: pathNameDialog
         onAccepted: {
-            var id = mapHelper.savePath(pathNameDialog.newPathName)
-            var pathData = [[id], [pathNameDialog.newPathName]]
-            mainMenuHelper.addToLoadPaths(pathData)
+            var id = map.helper.savePath(nameStr.displayText)
+            var pathData = [[id], [nameStr.displayText]]
+            menuHelper.addToLoadPaths(pathData)
         }
     }
 
@@ -34,7 +32,7 @@ MenuBar {
         title: qsTr("Path Tools")
         Action {
             text: qsTr("Show/Hide Route")
-            onTriggered: map.toggleRoute()
+            onTriggered: map.helper.toggleRoute()
         }
         Action {
             text: qsTr("Save Path")
@@ -46,7 +44,7 @@ MenuBar {
 
         Action {
             text: qsTr("Track Distance")
-            onTriggered: map.updateDistances()
+            onTriggered: map.helper.updateDistances()
         }
     }
 
@@ -63,7 +61,7 @@ MenuBar {
         title: qsTr("Marker Tools")
         Action {
             text: qsTr("Show/Hide Markers")
-            onTriggered: map.toggleMarkers()
+            onTriggered: map.helper.toggleMarkers()
         }
 
         MenuSeparator {
@@ -79,11 +77,12 @@ MenuBar {
         title: qsTr("Map Tools")
         Action {
             text: qsTr("Snap/Unsnap to GPS")
-            onTriggered: map.snapUnsnapGPS()
+            onTriggered: map.helper.snapUnsnapGPS()
         }
     }
 
     Rectangle {
+        id: rectangle
         color: "light green"
         parent: mainMenu
         height: parent.height - 10
@@ -103,7 +102,7 @@ MenuBar {
 
         MouseArea {
             anchors.fill: parent
-            onClicked: map.activateGPS()
+            onPressed: map.helper.activateGps()
         }
     }
 }
