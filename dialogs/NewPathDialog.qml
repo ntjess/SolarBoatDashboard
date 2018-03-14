@@ -3,7 +3,7 @@ import QtQuick.Controls 2.3
 import QtQuick.Dialogs 1.2
 
 Dialog {
-    property string newPathName;
+    property alias nameStr: pathName;
 
     id: pathNameDialog
     height: 120
@@ -24,11 +24,11 @@ Dialog {
 
             TextInput {
                 id: pathName
+                focus: true
                 anchors.fill: parent
                 anchors.margins: 4
                 mouseSelectionMode: TextInput.SelectCharacters
                 selectByMouse: true
-                onDisplayTextChanged: newPathName = pathName.displayText
             }
         }
     }

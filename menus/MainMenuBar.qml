@@ -38,7 +38,10 @@ MenuBar {
         }
         Action {
             text: qsTr("Save Path")
-            onTriggered: pathNameDialog.open()
+            onTriggered: {
+                pathNameDialog.open()
+                pathNameDialog.nameStr.focus = true;
+            }
         }
 
         Action {
