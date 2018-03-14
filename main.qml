@@ -10,6 +10,7 @@ import "helpers"
 
 
 ApplicationWindow {
+    id: root
     visible: true
     width: 640
     height: 480
@@ -22,15 +23,15 @@ ApplicationWindow {
     }
 
     InfoBar {
+        anchors.top: appMainMenu.bottom
         id: info
     }
 
     MapComponent {
         id: map
-        anchors.fill: parent
-        anchors.topMargin: info.height
-        MapHelper {
-            id: mapHelper
-        }
+        height: root.height - appMainMenu.height - info.height
+        width: root.width
+        anchors.top: info.bottom
+
     }
 }
