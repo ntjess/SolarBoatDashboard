@@ -1,25 +1,41 @@
 import QtQuick 2.5
 import QtQuick.Controls 2.3
-import QtQuick.Dialogs 1.2
 
 import "../helpers"
 import "../dialogs"
 
-Action {
+MenuItem {
+    signal deleteAction(int actionId)
+    property int actionId
+    Action {
+        id: action
+        // 'id' is a special field, so use an attr. name that can be externally set
+        onTriggered: {
+            map.helper.loadPath(actionId)
+            // Collapse the main menu after triggering. This doesn't happen
+            // automatically with a propagated trigger
+            dbPaths.cascade = false;
+        }
+    }
+    function deletePaths() {
+        var success = DatabaseMarkerPath.deletePath(actionId)
+        if (!success) {
+            console.log("Delete failed.")
+        } else {
+            // Remove path from GUI
+            menuHelper.deleteAction(actionId)
+        }
+    }
     DeleteDialog {
-        onYes: {
-            var success = DatabaseMarkerPath.deletePath(actionId)
-            if (!success) {
-                console.log("Delete failed.");
-            }
+        id: deleteDialog
+        onYes: deletePaths()
     }
 
-    property int actionId
-
     MouseArea {
+        // The press event must propagate to the action
+        onClicked: action.trigger()
+
         anchors.fill: parent
         onPressAndHold: deleteDialog.open()
     }
-
-    onTriggered: mainMenu.loadPath(actionId)
 }

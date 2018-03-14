@@ -38,7 +38,28 @@ return false;
 }
 
 bool DatabaseMarkerPath::deletePath(int id) {
-    // Make sure to delete path and all markers associated with it
+	DatabaseMarker m;
+	// First, try to delete the markers associated with the path
+	bool success = m.deletePathMarkers(id);
+	// Only delete the path from the id list if it was successful
+	if (success) {
+		QSqlQuery q;
+		q.prepare(deletePathStr);
+		q.addBindValue(id);
+		if (q.exec()) {
+			// Path was successfully deleted
+			return true;
+		} else {
+			qDebug() << "Failed to delete marker path: " << q.lastError().text();
+			return false;
+		}
+	} else {
+		// Markers didn't delete. Don't delete the path, or else there is
+		// no way to identify the markers without iterating through all
+		// other paths
+		qDebug() << "Markers didn't delete, so path didn't delete" << endl;
+		return false;
+	}
 }
 
 QVariantList DatabaseMarkerPath::readAllPaths() {
