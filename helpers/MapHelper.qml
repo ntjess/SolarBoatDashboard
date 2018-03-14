@@ -4,7 +4,7 @@ import QtQuick.Dialogs 1.2
 import QtPositioning 5.8
 
 Item {
-    function generateRoute() {
+    function updateRoute() {
         var pathCoords = []
         for (var i in map.markers) {
             pathCoords.push(map.markers[i].coordinate)
@@ -33,6 +33,7 @@ Item {
         }
         myArray.push(marker)
         markers = myArray
+        updateRoute()
     }
 
     function deleteMarker() {
@@ -48,7 +49,7 @@ Item {
         map.markers[map.currentMarker].destroy()
         map.markers = myArray
         map.markerCounter--
-        toggleRoute()
+        updateRoute()
     }
 
     function deleteAllMarkers() {
@@ -77,7 +78,7 @@ Item {
         if (mapLinePath.visible == true) {
             mapLinePath.visible = false
         } else {
-            mapHelper.generateRoute()
+            mapHelper.updateRoute()
             mapLinePath.visible = true
         }
     }
