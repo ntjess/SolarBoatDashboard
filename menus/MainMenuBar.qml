@@ -21,10 +21,14 @@ MenuBar {
     NewPathDialog {
         id: pathNameDialog
         onAccepted: {
-            var id = map.helper.savePath(nameStr.displayText)
-            var pathData = [[id], [nameStr.displayText]]
+            var id = map.helper.savePath(pathNameDialog.nameStr)
+            var pathData = [[id], [nameStr]]
             menuHelper.addToLoadPaths(pathData)
         }
+    }
+
+    RaceSettingsPopup {
+        id: settingsPopup
     }
 
     Menu {
@@ -38,13 +42,13 @@ MenuBar {
             text: qsTr("Save Path")
             onTriggered: {
                 pathNameDialog.open()
-                pathNameDialog.nameStr.focus = true;
+                pathNameDialog.nameStr.focus = true
             }
         }
 
         Action {
             text: qsTr("Track Distance")
-            onTriggered: map.helper.updateDistances()
+            onTriggered: map.helper.updateCircularDist()
         }
     }
 
@@ -78,6 +82,15 @@ MenuBar {
         Action {
             text: qsTr("Snap/Unsnap to GPS")
             onTriggered: map.helper.snapUnsnapGPS()
+        }
+    }
+
+    Menu {
+        id: settings
+        title: qsTr("Settings")
+        Action {
+            text: qsTr("Race settings")
+            onTriggered: settingsPopup.open()
         }
     }
 
