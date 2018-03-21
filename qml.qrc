@@ -31,6 +31,7 @@
         <file>dialogs/DeleteDialog.qml</file>
         <file>dialogs/NewPathDialog.qml</file>
         <file>helpers/MenuHelper.qml</file>
+        <file>dialogs/CustomTextInput.qml</file>
         <file>dialogs/CustomNumberInput.qml</file>
         <file>dialogs/RaceSettingsPopup.qml</file>
     </qresource>
