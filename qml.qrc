@@ -32,5 +32,8 @@
         <file>dialogs/NewPathDialog.qml</file>
         <file>helpers/MenuHelper.qml</file>
         <file>res/dirMarker.png</file>
+        <file>dialogs/CustomNumberInput.qml</file>
+        <file>dialogs/CustomTextInput.qml</file>
+        <file>dialogs/RaceSettingsPopup.qml</file>
     </qresource>
 </RCC>
