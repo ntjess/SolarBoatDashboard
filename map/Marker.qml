@@ -53,6 +53,9 @@ import QtLocation 5.6
 
 //! [mqi-top]
 MapQuickItem {
+    // Variable to determine which image is used for the created marker
+    property bool specDir
+
     id: marker
     //! [mqi-top]
     anchorPoint.x: image.width / 2

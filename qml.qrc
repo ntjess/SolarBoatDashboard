@@ -31,5 +31,6 @@
         <file>dialogs/DeleteDialog.qml</file>
         <file>dialogs/NewPathDialog.qml</file>
         <file>helpers/MenuHelper.qml</file>
+        <file>res/dirMarker.png</file>
     </qresource>
 </RCC>
