@@ -10,6 +10,11 @@ Item {
     property var markerCoords: []
 
     function updateRoute() {
+        if (map.numMarkers === 0) {
+            // No path, so don't try to change the path
+            return
+        }
+
         var pathCoords = []
         for (var i in markerCoords) {
             pathCoords.push(markerCoords[i])
@@ -70,7 +75,7 @@ Item {
         map.numMarkers = 0
         map.markers = newMarkers
         markerCoords = []
-        mapLinePath.visible = false
+        mapLinePath.enabled = false
     }
 
     function toggleMarkers() {
@@ -84,11 +89,11 @@ Item {
     }
 
     function toggleRoute() {
-        if (mapLinePath.visible == true) {
-            mapLinePath.visible = false
+        if (mapLinePath.enabled == true) {
+            mapLinePath.enabled = false
         } else {
             mapHelper.updateRoute()
-            mapLinePath.visible = true
+            mapLinePath.enabled = true
         }
     }
     function loadPath(pathId) {
@@ -120,7 +125,7 @@ Item {
     }
 
     function updateDistance(isCircularRace) {
-        if (!mapLinePath.visible) {
+        if (!mapLinePath.enabled) {
             // No path. Don't calculate anything
             return
         }

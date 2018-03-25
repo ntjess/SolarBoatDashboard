@@ -49,7 +49,7 @@ Map {
         id: mapLinePath
         line.width: 2
         line.color: 'green'
-        visible: false // This will change once a route is added
+        enabled: false // This will change once a route is added
     }
 
     PositionSource {
