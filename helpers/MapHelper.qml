@@ -119,38 +119,7 @@ Item {
         return DatabaseMarkerPath.createPath(pathName, lat, lon, marker_num)
     }
 
-    /*function updateDistances() {
-        if (!mapLinePath.visible) {
-            // No path. Don't calculate anything
-            return
-        }
-        var gpsCoord = gpsData.position.coordinate
-        var curDist = gpsCoord.distanceTo(
-                    map.markers[map.curTarget].coordinate)
-        // Work backwards to find total remaining distance
-        var totDist = 0
-        for (var i = map.numMarkers - 1; i > map.curTarget; i--) {
-            // This will add all distance from end point to current objective
-            totDist += map.markers[i].coordinate.distanceTo(
-                        map.markers[i - 1].coordinate)
-        }
-        // This will happen if GPS is close to another marker and there is still at least
-        // one more waypoint past the objective
-        if (totDist != 0 && curDist < map.distanceThreshold) {
-            map.curTarget++
-            curDist = gpsCoord.distanceTo(map.markers[map.curTarget])
-        } else if (curDist < map.distanceThreshold) {
-            // Within tolerance of final marker. Consider race finished
-            map.finishedRace = true
-            return
-        }
-
-        totDist += curDist
-        // Total distance should now be accurate regardless of whether a new objective was set
-        map.remainingDistance = totDist
-        map.distToNextMarker = curDist
-    }*/
-    function updateDistance(useCircular) {
+    function updateDistance(isCircularRace) {
         if (!mapLinePath.visible) {
             // No path. Don't calculate anything
             return
