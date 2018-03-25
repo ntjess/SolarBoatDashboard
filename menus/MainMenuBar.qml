@@ -48,7 +48,7 @@ MenuBar {
 
         Action {
             text: qsTr("Track Distance")
-            onTriggered: map.helper.updateDistance(map.raceType === "Circular")
+            onTriggered: map.helper.updateDistance(map.isCircularRace)
         }
     }
 

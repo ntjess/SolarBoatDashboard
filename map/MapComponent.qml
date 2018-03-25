@@ -22,7 +22,7 @@ Map {
     property double speed: 0 // in m/s
 
     // Race setting variables
-    property string raceType: "Back-Forth"
+    property bool isCircularRace: false
     property int numLaps: 0
     property int lapsCompleted: 0
     property bool upDir: true
@@ -59,7 +59,7 @@ Map {
         updateInterval: 3000 // In milliseconds
         onPositionChanged: {
             if (active && !finishedRace) {
-                helper.updateDistance(map.raceType === "Circular")
+                helper.updateDistance(map.isCircularRace)
             }
             map.speed = position.speed // in m/s
             if (map.followingGPS) {
@@ -68,7 +68,7 @@ Map {
         }
     }
 
-    onRaceTypeChanged: gpsData.nmeaSource = (raceType === "Circular" ? "../res/sampleData/output.nmea" : "../res/sampleData/backForth.nmea")
+    onIsCircularRaceChanged: gpsData.nmeaSource = (isCircularRace ? "../res/sampleData/output.nmea" : "../res/sampleData/backForth.nmea")
 
     CurrentLocation {
     }

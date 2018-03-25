@@ -10,8 +10,8 @@ Item {
             pathCoords.push(map.markers[i].coordinate)
         }
         // Complete the loop if this is a circular race
-        if (map.raceType === "Circular") {
             pathCoords.push(map.markers[0].coordinate)
+        if (map.isCircularRace) {
         }
 
         mapLinePath.path = pathCoords
@@ -157,7 +157,7 @@ Item {
 
         // Init the function that we use for distance calculation. This
         // will save from needing if statements later
-        var getLapDist = (useCircular ? totCircularLapDist : totBackForthLapDist)
+        if (map.isCircularRace) {
         var totDist = 0
         var lapDist = 0
 
@@ -183,7 +183,7 @@ Item {
                 map.lapsCompleted++
             }
             //For a back-forth path, change directions if at either bound
-            if (map.raceType === "Back-Forth"
+            if (!map.isCircularRace
                     && (map.curTarget === 0
                         || map.curTarget === map.numMarkers - 1)) {
                 // For the back-forth path, this is the time to switch
