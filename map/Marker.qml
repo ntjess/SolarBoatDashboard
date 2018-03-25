@@ -54,7 +54,11 @@ import QtLocation 5.6
 //! [mqi-top]
 MapQuickItem {
     // Variable to determine which image is used for the created marker
-    property bool specDir
+    property bool specDir: false
+    // Marker number will change if a marker in the middle of a path is
+    // deleted. To track this, make the text a property that other elements
+    // can access
+    property alias num: number.text
 
     id: marker
     //! [mqi-top]
@@ -83,9 +87,16 @@ MapQuickItem {
                         map.currentMarker = i
                         break
                     }
+            onPressAndHold: {
+                marker.specDir = !marker.specDir
+                if (marker.specDir) {
+                    image.source = "../res/dirMarker.png"
+                } else {
+                    image.source = "../res/marker.png"
                 }
                 // Parameter says whether to delete all
                 map.helper.deleteMarker()
+                image.update()
             }
         }
 
