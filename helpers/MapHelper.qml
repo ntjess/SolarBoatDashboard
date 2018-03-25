@@ -40,19 +40,21 @@ Item {
         updateRoute()
     }
 
-    function deleteMarker() {
-        //update list of markers
-        var myArray = []
-        var count = map.markers.length
-        for (var i = 0; i < count; i++) {
-            if (i != map.currentMarker)
-                myArray.push(map.markers[i])
+    function deleteMarker(idx) {
+        // If the last marker is removed, we don't have to do any renaming
+        if (idx !== map.numMarkers - 1) {
+            // All markers before the removed one will not be changed. Thus,
+            // We can start the iteration at the first changed marker
+            for (var i = idx + 1; i < map.numMarkers; i++) {
+                // Shift the number of each marker so that nothing is skipped
+                map.markers[i].num--
+            }
         }
-
-        map.removeMapItem(map.markers[map.currentMarker])
-        map.markers[map.currentMarker].destroy()
-        map.markers = myArray
-        map.markerCounter--
+        // Keep the removed element to delete it from the map
+        var removedMarker = map.markers.splice(idx, 1)[0]
+        map.removeMapItem(removedMarker)
+        map.numMarkers--
+        removedMarker.destroy()
         updateRoute()
     }
 

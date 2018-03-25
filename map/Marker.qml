@@ -81,12 +81,11 @@ MapQuickItem {
             preventStealing: true
 
             onDoubleClicked: {
-                map.currentMarker = -1
-                for (var i = 0; i < map.markers.length; i++) {
-                    if (marker == map.markers[i]) {
-                        map.currentMarker = i
-                        break
-                    }
+                // Parameter should be a number, not a string. Also, recall
+                // the label is 1-indexed where an idx should be 0-indexed
+                map.helper.deleteMarker(Number(num)-1)
+            }
+
             onPressAndHold: {
                 marker.specDir = !marker.specDir
                 if (marker.specDir) {
@@ -94,8 +93,6 @@ MapQuickItem {
                 } else {
                     image.source = "../res/marker.png"
                 }
-                // Parameter says whether to delete all
-                map.helper.deleteMarker()
                 image.update()
             }
         }
