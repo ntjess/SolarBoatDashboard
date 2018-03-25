@@ -14,7 +14,7 @@ Map {
 
     // Path and distance
     property bool finishedRace: false
-    property int distToNextMarker: 0
+    property int guideMarkerDist: 0
     property int curTarget: 1 // What marker the GPS is aiming for next
     // Tolerance (m) acceptable to consider current location as reaching the next marker
     property int distanceThreshold: 15
@@ -60,6 +60,8 @@ Map {
         onPositionChanged: {
             if (active && !finishedRace) {
                 helper.updateDistance(map.isCircularRace)
+                info.helper.updateTexts(map.finishedRace, map.guideMarkerDist,
+                                        map.remainingDistance, position.speed)
             }
             map.speed = position.speed // in m/s
             if (map.followingGPS) {

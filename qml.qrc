@@ -35,5 +35,6 @@
         <file>dialogs/CustomNumberInput.qml</file>
         <file>dialogs/CustomTextInput.qml</file>
         <file>dialogs/RaceSettingsPopup.qml</file>
+        <file>helpers/InfoHelper.qml</file>
     </qresource>
 </RCC>

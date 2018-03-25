@@ -132,7 +132,16 @@ Item {
 
         // Init the function that we use for distance calculation. This
         // will save from needing if statements later
+        var getLapDist
+        var distToDirMarker
         if (map.isCircularRace) {
+            getLapDist = circularLapDist
+            distToDirMarker = circularGuideDist
+        } else {
+            getLapDist = backForthLapDist
+            distToDirMarker = backForthGuideDist
+        }
+
         var totDist = 0
         var lapDist = 0
 
@@ -182,10 +191,16 @@ Item {
         totDist += curDist
         // Total distance should now be accurate regardless of whether a new objective was set
         map.remainingDistance = totDist
-        map.distToNextMarker = curDist
+        // Find the closest direction marker, since this is part of the information
+        // the user wants to see
+        map.guideMarkerDist = distToDirMarker()
     }
 
-    function totCircularLapDist(wholeLap) {
+    function circularLapDist(wholeLap) {
+        // If the next target is the end, there is no path distance
+        if (!wholeLap && map.curTarget === 0) {
+            return 0
+        }
         // Init lap distance with dist from end to beginning
         var lapDist = markerCoords[map.numMarkers - 1].distanceTo(
                     markerCoords[0])
@@ -198,7 +213,7 @@ Item {
         return lapDist
     }
 
-    function totBackForthLapDist(wholeLap) {
+    function backForthLapDist(wholeLap) {
         // Used for partial distance calculation
         var startIdx = 0
         var endIdx = map.numMarkers - 1
@@ -227,6 +242,106 @@ Item {
                 runningTot += markerCoords[i].distanceTo(markerCoords[i + 1])
             }
             return runningTot
+        }
+    }
+
+    function circularGuideDist() {
+        var totDist = 0
+        var curDist = gpsData.position.coordinate.distanceTo(
+                    markerCoords[map.curTarget])
+        var curIdx // This gets hoisted anyway, so just declare it here
+        // Simply check all markers in a circle to see if they are guides
+        var end = map.numMarkers + map.curTarget
+        for (var i = map.curTarget; i < end; i++) {
+            curIdx = i % map.numMarkers
+            if (map.markers[curIdx].isGuide) {
+                return curDist + totDist
+            }
+            // Don't roll over if there are no more laps to complete
+            if (curIdx === 0 && map.lapsCompleted === map.numLaps - 1) {
+                break
+            }
+
+            totDist += markerCoords[curIdx].distanceTo(
+                        markerCoords[(curIdx + 1) % map.numMarkers])
+        }
+        // Reached if there are no guide markers
+        return -1
+    }
+
+    function backForthGuideDist() {
+        var existingGuide = false
+        var totDist = 0
+        // Will vary based on direction
+        if (map.upDir) {
+            // Keep going up, adding distances until a guide marker is reached
+            for (var i = map.curTarget; i < map.numMarkers - 1; i++) {
+                if (map.markers[i].isGuide) {
+                    // Found the proper marker distance, so stop iterating
+                    existingGuide = true
+                    break
+                }
+                totDist += markerCoords[i].distanceTo(markerCoords[i + 1])
+            }
+            // Possible that the unchecked marker is a guide
+            if (map.markers[map.numMarkers - 1].isGuide) {
+                existingGuide = true
+            }
+
+            if (!existingGuide) {
+                // If this point is reached, there was no guide in the higher markers.
+                // Double the distance (what it takes to get back to current target)
+                // and look the other way for more guides
+                totDist *= 2
+                for (var i = map.curTarget; i >= 1; i--) {
+                    if (map.markers[i].isGuide) {
+                        existingGuide = true
+                        break
+                    }
+                    totDist += markerCoords[i].distanceTo(markerCoords[i - 1])
+                }
+            }
+            // Possible that the unchecked marker is a guide
+            if (map.markers[0].isGuide) {
+                existingGuide = true
+            }
+        } else {
+            // Just do the same thing, but switch the loops
+            for (var i = map.curTarget; i >= 1; i--) {
+                if (map.markers[i].isGuide) {
+                    existingGuide = true
+                    break
+                }
+                totDist += markerCoords[i].distanceTo(markerCoords[i - 1])
+            }
+            // Possible that the unchecked marker is a guide
+            if (map.markers[0].isGuide) {
+                existingGuide = true
+            }
+            // Only check up the markers if there's more than one lap remaining
+            // and no guide has been found
+            if (!existingGuide && map.lapsCompleted !== map.numLaps - 1) {
+                totDist *= 2
+                for (var i = map.curTarget; i < map.numMarkers - 1; i++) {
+                    if (map.markers[i].isGuide) {
+                        // Found the proper marker distance, so stop iterating
+                        existingGuide = true
+                        break
+                    }
+                    totDist += markerCoords[i].distanceTo(markerCoords[i + 1])
+                }
+                // Possible that the unchecked marker is a guide
+                if (map.markers[map.numMarkers - 1].isGuide) {
+                    existingGuide = true
+                }
+            }
+        }
+        if (!existingGuide) {
+            return -1
+        } else {
+            // Add on the distance between my current position and target
+            return totDist + gpsData.position.coordinate.distanceTo(
+                        markerCoords[map.curTarget])
         }
     }
 

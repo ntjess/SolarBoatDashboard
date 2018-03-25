@@ -1,34 +1,49 @@
 import QtQuick 2.5
 import QtQuick.Controls 2.3
 
+import "../helpers/"
+
 Rectangle {
+    // Expose helper functions to other qml objects
+    property alias helper: infoHelper
+
+    // Allow the helper to modify text strings
+    property string guideTxt: "N/A"
+    property string velocityTxt: "N/A"
+    property string remainingDistTxt: "N/A"
+
+    id: info
     color: "light grey"
     width: parent.width
     height: 50
 
+    InfoHelper {
+        id: infoHelper
+    }
+
     Text {
-        id: nextMarkerDistText
+        id: nextGuide
         anchors.left: parent.left
         anchors.leftMargin: 10
-        text: map.finishedRace ? "DONE!" : "Distance to next marker: " + map.distToNextMarker + " m"
+        text: guideTxt
         font.pointSize: 14
     }
 
     Text {
-        id: reminingDistText
-        anchors.left: nextMarkerDistText.right
+        id: reminingDist
+        anchors.left: nextGuide.right
         anchors.leftMargin: 10
-        text: map.finishedRace ? "DONE!" : "Total remaining distance: " + map.remainingDistance + " m"
+        text: remainingDistTxt
         font.pointSize: 14
     }
 
     Text {
-        id: velocityText
+        id: velocity
         anchors.left: parent.left
         anchors.bottom: parent.bottom
         anchors.bottomMargin: 10
         anchors.leftMargin: 10
-        text: map.finishedRace ? "DONE!" : "Velocity: " + map.speed + " m/s"
+        text: velocityTxt
         font.pointSize: 14
     }
 }
