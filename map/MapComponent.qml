@@ -10,7 +10,7 @@ Map {
     property int numMarkers: 0
     // Independently keep track of markers that note directions
     property int numDirMarkers: 0
-    property variant markers
+    property var markers
 
     // Path and distance
     property bool finishedRace: false
@@ -30,7 +30,7 @@ Map {
     // Snap/unsnap GPS
     property bool followingGPS: false
     property int currentMarker: -1
-    property variant leeuwarden: QtPositioning.coordinate(53.2012, 5.7999)
+    property var leeuwarden: QtPositioning.coordinate(53.2012, 5.7999)
 
     // Expose the map helper to other qml components
     property alias helper: mapHelper
