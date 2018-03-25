@@ -4,14 +4,19 @@ import QtQuick.Dialogs 1.2
 import QtPositioning 5.8
 
 Item {
+    // QML optimizes performances if this is its own variable rather than
+    // constantly accessing a subobject of a map object. This gets repopulated
+    // as markers change in the map
+    property var markerCoords: []
+
     function updateRoute() {
         var pathCoords = []
-        for (var i in map.markers) {
-            pathCoords.push(map.markers[i].coordinate)
+        for (var i in markerCoords) {
+            pathCoords.push(markerCoords[i])
         }
         // Complete the loop if this is a circular race
-            pathCoords.push(map.markers[0].coordinate)
         if (map.isCircularRace) {
+            pathCoords.push(markerCoords[0])
         }
 
         mapLinePath.path = pathCoords
@@ -22,22 +27,15 @@ Item {
     }
 
     function addMarker(coords) {
-        // If markers isn't initialized, make it
-        map.markers = map.markers || []
-        var count = map.markers.length
-        numMarkers++
+        map.numMarkers++
         var marker = Qt.createQmlObject('import "../map"; Marker {}', map)
         map.addMapItem(marker)
         marker.z = map.z + 1
         marker.coordinate = coords
+        markerCoords.push(coords)
 
-        //update list of markers
-        var myArray = []
-        for (var i = 0; i < count; i++) {
-            myArray.push(markers[i])
-        }
-        myArray.push(marker)
-        markers = myArray
+        map.markers.push(marker)
+        map.markersChanged()
         updateRoute()
     }
 
@@ -53,6 +51,9 @@ Item {
         }
         // Keep the removed element to delete it from the map
         var removedMarker = map.markers.splice(idx, 1)[0]
+        // Delete from coord list, too. Assign to variable because QML forces
+        // you to...
+        var uselessVariable = markerCoords.splice(idx, 1)[0]
         map.removeMapItem(removedMarker)
         map.numMarkers--
         removedMarker.destroy()
@@ -66,8 +67,9 @@ Item {
             map.removeMapItem(map.markers[i])
             map.markers[i].destroy()
         }
-        map.markers = newMarkers
         map.numMarkers = 0
+        map.markers = newMarkers
+        markerCoords = []
         mapLinePath.visible = false
     }
 
@@ -109,10 +111,9 @@ Item {
         var lat = []
         var lon = []
         var marker_num = []
-        for (var i in map.markers) {
-            var marker = map.markers[i]
-            lat.push(marker.coordinate.latitude)
-            lon.push(marker.coordinate.longitude)
+        for (var i in markerCoords) {
+            lon.push(markerCoords[i].longitude)
+            lat.push(markerCoords[i].latitude)
             marker_num.push(Number(i) + 1)
         }
         return DatabaseMarkerPath.createPath(pathName, lat, lon, marker_num)
@@ -170,7 +171,7 @@ Item {
         }
 
         var gpsCoord = gpsData.position.coordinate
-        var curDist = gpsCoord.distanceTo(map.markers[map.curTarget].coordinate)
+        var curDist = gpsCoord.distanceTo(markerCoords[map.curTarget])
         // Find remaining distance in current lap
         totDist += getLapDist(false)
 
@@ -197,7 +198,7 @@ Item {
             } else {
                 map.curTarget--
             }
-            curDist = gpsCoord.distanceTo(map.markers[map.curTarget])
+            curDist = gpsCoord.distanceTo(markerCoords[map.curTarget])
         } else if (curDist < map.distanceThreshold) {
             // Within tolerance of final marker. Consider race finished
             map.finishedRace = true
@@ -212,14 +213,13 @@ Item {
 
     function totCircularLapDist(wholeLap) {
         // Init lap distance with dist from end to beginning
-        var lapDist = map.markers[map.numMarkers - 1].coordinate.distanceTo(
-                    map.markers[0].coordinate)
+        var lapDist = markerCoords[map.numMarkers - 1].distanceTo(
+                    markerCoords[0])
         // Fill in the rest of the lap to get total lap distance
         var start = (wholeLap ? 0 : map.curTarget)
         for (var i = start; i < map.numMarkers - 1; i++) {
             // Find the distance to end of markers
-            lapDist += map.markers[i].coordinate.distanceTo(
-                        map.markers[i + 1].coordinate)
+            lapDist += markerCoords[i].distanceTo(markerCoords[i + 1])
         }
         return lapDist
     }
@@ -232,8 +232,7 @@ Item {
         var oneWayDist = 0
         var runningTot = 0
         for (var i = 0; i < map.numMarkers - 1; i++) {
-            oneWayDist += map.markers[i].coordinate.distanceTo(
-                        map.markers[i + 1].coordinate)
+            oneWayDist += markerCoords[i].distanceTo(markerCoords[i + 1])
         }
         // For a whole lap, simply double this distance
         if (wholeLap) {
@@ -251,8 +250,7 @@ Item {
             }
             // Iterate through the specified idx's to get running tot
             for (var i = startIdx; i < endIdx; i++) {
-                runningTot += map.markers[i].coordinate.distanceTo(
-                            map.markers[i + 1].coordinate)
+                runningTot += markerCoords[i].distanceTo(markerCoords[i + 1])
             }
             return runningTot
         }
