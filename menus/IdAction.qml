@@ -12,6 +12,8 @@ MenuItem {
         // 'id' is a special field, so use an attr. name that can be externally set
         onTriggered: {
             map.helper.loadPath(actionId)
+            // Show the path between the markers after loading
+            map.helper.toggleRoute()
             // Collapse the main menu after triggering. This doesn't happen
             // automatically with a propagated trigger
             dbPaths.close();

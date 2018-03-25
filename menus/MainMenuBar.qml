@@ -48,7 +48,7 @@ MenuBar {
 
         Action {
             text: qsTr("Track Distance")
-            onTriggered: map.helper.updateCircularDist()
+            onTriggered: map.helper.updateDistance(map.raceType === "Circular")
         }
     }
 
@@ -108,14 +108,19 @@ MenuBar {
 
         Text {
             anchors.centerIn: parent
-            text: "Start GPS"
+            text: "Start race"
             color: "white"
             font.pointSize: 12
         }
 
         MouseArea {
             anchors.fill: parent
-            onPressed: map.helper.activateGps()
+            onPressed: {
+                map.helper.activateGps()
+                map.curTarget = 1
+                map.lapsCompleted = 0
+                map.finishedRace = false
+            }
         }
     }
 }

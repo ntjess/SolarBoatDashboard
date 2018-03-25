@@ -24,7 +24,7 @@ Item {
         // If markers isn't initialized, make it
         map.markers = map.markers || []
         var count = map.markers.length
-        markerCounter++
+        numMarkers++
         var marker = Qt.createQmlObject('import "../map"; Marker {}', map)
         map.addMapItem(marker)
         marker.z = map.z + 1
@@ -64,13 +64,13 @@ Item {
             map.markers[i].destroy()
         }
         map.markers = newMarkers
-        map.markerCounter = 0
+        map.numMarkers = 0
         mapLinePath.visible = false
     }
 
     function toggleMarkers() {
         // Shouldn't do anything if there are no markers
-        if (map.markerCounter == 0)
+        if (map.numMarkers == 0)
             return
         var visibility = map.markers[0].visible
         for (var el in map.markers) {
@@ -115,17 +115,17 @@ Item {
         return DatabaseMarkerPath.createPath(pathName, lat, lon, marker_num)
     }
 
-    function updateDistances() {
+    /*function updateDistances() {
         if (!mapLinePath.visible) {
             // No path. Don't calculate anything
             return
         }
         var gpsCoord = gpsData.position.coordinate
         var curDist = gpsCoord.distanceTo(
-                    map.markers[map.currentTarget].coordinate)
+                    map.markers[map.curTarget].coordinate)
         // Work backwards to find total remaining distance
         var totDist = 0
-        for (var i = map.markerCounter - 1; i > map.currentTarget; i--) {
+        for (var i = map.numMarkers - 1; i > map.curTarget; i--) {
             // This will add all distance from end point to current objective
             totDist += map.markers[i].coordinate.distanceTo(
                         map.markers[i - 1].coordinate)
@@ -133,8 +133,8 @@ Item {
         // This will happen if GPS is close to another marker and there is still at least
         // one more waypoint past the objective
         if (totDist != 0 && curDist < map.distanceThreshold) {
-            map.currentTarget++
-            curDist = gpsCoord.distanceTo(map.markers[map.currentTarget])
+            map.curTarget++
+            curDist = gpsCoord.distanceTo(map.markers[map.curTarget])
         } else if (curDist < map.distanceThreshold) {
             // Within tolerance of final marker. Consider race finished
             map.finishedRace = true
@@ -145,50 +145,56 @@ Item {
         // Total distance should now be accurate regardless of whether a new objective was set
         map.remainingDistance = totDist
         map.distToNextMarker = curDist
-    }
-
-    function updateCircularDist() {
+    }*/
+    function updateDistance(useCircular) {
         if (!mapLinePath.visible) {
             // No path. Don't calculate anything
             return
         }
+
+        // Init the function that we use for distance calculation. This
+        // will save from needing if statements later
+        var getLapDist = (useCircular ? totCircularLapDist : totBackForthLapDist)
         var totDist = 0
         var lapDist = 0
 
         // Only find total lap distance if there is < 1 lap remaining. Else it
         // is just a waste
         if (map.numLaps - map.lapsCompleted > 1) {
-            lapDist += totCircularLapDist()
+            lapDist += getLapDist(true)
             // Increase total distance by the number of completely untraversed laps
             totDist += lapDist * (map.numLaps - map.lapsCompleted - 1)
         }
 
         var gpsCoord = gpsData.position.coordinate
-        var curDist = gpsCoord.distanceTo(
-                    map.markers[map.currentTarget].coordinate)
-        // Find remaining distance in current lap. If next marker is 0, then the
-        // current lap is finishing up. No need to iterate
-        if (map.currentTarget !== 0) {
-            // Init lap distance with dist from end to beginning
-            totDist += map.markers[map.markerCounter - 1].coordinate.distanceTo(
-                        map.markers[0].coordinate)
-            for (var i = map.currentTarget; i < map.markerCounter - 1; i++) {
-                // This will add all distance from end point to current objective
-                totDist += map.markers[i].coordinate.distanceTo(
-                            map.markers[i + 1].coordinate)
-            }
-        }
+        var curDist = gpsCoord.distanceTo(map.markers[map.curTarget].coordinate)
+        // Find remaining distance in current lap
+        totDist += getLapDist(false)
+
         // This will happen if GPS is close to another marker and there is still at least
         // one more waypoint past the objective
         if (totDist != 0 && curDist < map.distanceThreshold) {
-            // This will account for lap wrap around. If current target is 0,
-            // we just finished another lap
-            if (map.currentTarget === 0) {
-                map.lapsCompleted++;
+            // This will account for lap wrap around when we just finished
+            // another lap.
+            if (map.curTarget === 0) {
+                map.lapsCompleted++
             }
-
-            map.currentTarget = (map.currentTarget + 1) % map.markerCounter
-            curDist = gpsCoord.distanceTo(map.markers[map.currentTarget])
+            //For a back-forth path, change directions if at either bound
+            if (map.raceType === "Back-Forth"
+                    && (map.curTarget === 0
+                        || map.curTarget === map.numMarkers - 1)) {
+                // For the back-forth path, this is the time to switch
+                // direction for next marker
+                map.upDir = !map.upDir
+            }
+            // Choose the next marker based on whether the path is incrementing
+            // or decrementing along the markers
+            if (map.upDir) {
+                map.curTarget = (map.curTarget + 1) % map.numMarkers
+            } else {
+                map.curTarget--
+            }
+            curDist = gpsCoord.distanceTo(map.markers[map.curTarget])
         } else if (curDist < map.distanceThreshold) {
             // Within tolerance of final marker. Consider race finished
             map.finishedRace = true
@@ -201,12 +207,13 @@ Item {
         map.distToNextMarker = curDist
     }
 
-    function totCircularLapDist() {
+    function totCircularLapDist(wholeLap) {
         // Init lap distance with dist from end to beginning
-        var lapDist = map.markers[map.markerCounter - 1].coordinate.distanceTo(
+        var lapDist = map.markers[map.numMarkers - 1].coordinate.distanceTo(
                     map.markers[0].coordinate)
         // Fill in the rest of the lap to get total lap distance
-        for (var i = 0; i < map.markerCounter - 1; i++) {
+        var start = (wholeLap ? 0 : map.curTarget)
+        for (var i = start; i < map.numMarkers - 1; i++) {
             // Find the distance to end of markers
             lapDist += map.markers[i].coordinate.distanceTo(
                         map.markers[i + 1].coordinate)
@@ -214,7 +221,39 @@ Item {
         return lapDist
     }
 
-    function backForthDistRemaining() {}
+    function totBackForthLapDist(wholeLap) {
+        // Used for partial distance calculation
+        var startIdx = 0
+        var endIdx = map.numMarkers - 1
+        // Get one way distance since in most cases it is needed
+        var oneWayDist = 0
+        var runningTot = 0
+        for (var i = 0; i < map.numMarkers - 1; i++) {
+            oneWayDist += map.markers[i].coordinate.distanceTo(
+                        map.markers[i + 1].coordinate)
+        }
+        // For a whole lap, simply double this distance
+        if (wholeLap) {
+            return oneWayDist * 2
+        } else {
+            // Find portion of lap needed based on direction we are
+            // currently going
+            if (map.upDir) {
+                startIdx = map.curTarget
+                // If going up, we will eventually have to go down. Account
+                // for this by adding in the one way dist
+                runningTot += oneWayDist
+            } else {
+                endIdx = map.curTarget
+            }
+            // Iterate through the specified idx's to get running tot
+            for (var i = startIdx; i < endIdx; i++) {
+                runningTot += map.markers[i].coordinate.distanceTo(
+                            map.markers[i + 1].coordinate)
+            }
+            return runningTot
+        }
+    }
 
     function displayGPSCoord() {
         console.log(currentLoc.gpsData.position.coordinate)
@@ -226,7 +265,7 @@ Item {
     }
 
     function setNewTarget(newTarget) {
-        map.currentTarget = newTarget
+        map.curTarget = newTarget
         map.updateDistances()
     }
 }

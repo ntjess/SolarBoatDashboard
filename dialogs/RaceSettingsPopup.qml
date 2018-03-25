@@ -22,7 +22,10 @@ Popup {
             ComboBox {
                 // TODO: change to enumeration
                 model: ["Back-Forth", "Circular"]
-                onCurrentTextChanged: map.raceType = currentText
+                onCurrentTextChanged: {
+                    map.raceType = currentText
+                    map.helper.updateRoute()
+                }
             }
         }
         Row {
@@ -31,10 +34,8 @@ Popup {
                 text: qsTr("Number of Laps: ")
             }
             CustomNumberInput {
-                onNumChanged: map.numLaps = num;
+                onNumChanged: map.numLaps = num
             }
         }
     }
-
-    onClosed: console.log("Popup closed.")
 }

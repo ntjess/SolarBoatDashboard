@@ -7,13 +7,15 @@ import "../helpers"
 
 Map {
     // Markers
-    property int markerCounter: 0
+    property int numMarkers: 0
+    // Independently keep track of markers that note directions
+    property int numDirMarkers: 0
     property variant markers
 
     // Path and distance
     property bool finishedRace: false
     property int distToNextMarker: 0
-    property int currentTarget: 1 // What marker the GPS is aiming for next
+    property int curTarget: 1 // What marker the GPS is aiming for next
     // Tolerance (m) acceptable to consider current location as reaching the next marker
     property int distanceThreshold: 15
     property int remainingDistance: 0
@@ -23,6 +25,7 @@ Map {
     property string raceType: "Back-Forth"
     property int numLaps: 0
     property int lapsCompleted: 0
+    property bool upDir: true
 
     // Snap/unsnap GPS
     property bool followingGPS: false
@@ -55,13 +58,17 @@ Map {
         nmeaSource: "../res/sampleData/output.nmea"
         updateInterval: 3000 // In milliseconds
         onPositionChanged: {
-            !finishedRace & helper.updateCircularDist()
+            if (active && !finishedRace) {
+                helper.updateDistance(map.raceType === "Circular")
+            }
             map.speed = position.speed // in m/s
             if (map.followingGPS) {
                 map.center = position.coordinate
             }
         }
     }
+
+    onRaceTypeChanged: gpsData.nmeaSource = (raceType === "Circular" ? "../res/sampleData/output.nmea" : "../res/sampleData/backForth.nmea")
 
     CurrentLocation {
     }
@@ -75,7 +82,8 @@ Map {
             style: Text.Outline
             font.pointSize: 15
         }
-        coordinate: QtPositioning.coordinate(53.20370367, 5.80089859) // GPS start
+        coordinate: QtPositioning.coordinate(53.20370367,
+                                             5.80089859) // GPS start
         anchorPoint: Qt.point(sourceItem.width * 0.5, sourceItem.height * 0.5)
     }
 
