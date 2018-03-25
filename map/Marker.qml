@@ -106,7 +106,7 @@ MapQuickItem {
             font.pixelSize: 14
             horizontalAlignment: Text.AlignHCenter
             Component.onCompleted: {
-                text = map.markerCounter
+                text = map.numMarkers
             }
         }
 

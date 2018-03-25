@@ -9,7 +9,8 @@ Item {
         for (var i in map.markers) {
             pathCoords.push(map.markers[i].coordinate)
         }
-        if (map.raceType == "Circular") {
+        // Complete the loop if this is a circular race
+        if (map.raceType === "Circular") {
             pathCoords.push(map.markers[0].coordinate)
         }
 
