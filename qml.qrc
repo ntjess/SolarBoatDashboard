@@ -19,7 +19,6 @@
         <file>src/canBus.cpp</file>
         <file>src/CANInterface.cpp</file>
         <file>src/canSocket.cpp</file>
-        <file>src/DBConnection.cpp</file>
         <file>src/dataprocessor.cpp</file>
         <file>include/DBMarker.h</file>
         <file>include/DBPath.h</file>
