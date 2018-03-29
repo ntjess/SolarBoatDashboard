@@ -1,16 +1,16 @@
-#ifndef DATABASECONNECTION_H
-#define DATABASECONNECTION_H
+#ifndef DBConnection_H
+#define DBConnection_H
 #include <QSqlDatabase>
 #include <QtDebug>
 #include <QSqlError>
 #include <QSqlQuery>
 #include <QSqlDriver>
 
-#include "DatabaseMarker.h"
+#include "DBMarker.h"
 
-class DatabaseConnection {
+class DBConnection {
 public:
-	DatabaseConnection();
+	DBConnection();
 
 	void initConnection(const QString &path = "C:/Users/Nathan/Desktop/UpdatedSolarBoat/SolarBoatDashboard/res/database/paths.db");// ":/res/database/paths.db");
 	void closeConnection();
@@ -35,4 +35,4 @@ private:
 
 };
 
-#endif // DATABASECONNECTION_H
+#endif // DBConnection_H

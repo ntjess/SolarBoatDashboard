@@ -1,9 +1,9 @@
-#include "include/DatabaseMarker.h"
+#include "include/DBMarker.h"
 #include <QDebug>
 #include <QSqlError>
 #include <QVariantList>
 
-bool DatabaseMarker::createPathMarkers(QVariantList path_id, QVariantList lat,
+bool DBMarker::createPathMarkers(QVariantList path_id, QVariantList lat,
 												QVariantList lon, QVariantList marker_num) {
 	bool success = false;
 	QSqlQuery q;
@@ -24,7 +24,7 @@ bool DatabaseMarker::createPathMarkers(QVariantList path_id, QVariantList lat,
 	return success;
 }
 
-QVariantList DatabaseMarker::readPathMarkers(int path_id) {
+QVariantList DBMarker::readPathMarkers(int path_id) {
 	QVariantList markers, markerData;
 	QSqlQuery q;
 	q.prepare(readPathMarkersStr);
@@ -44,7 +44,7 @@ QVariantList DatabaseMarker::readPathMarkers(int path_id) {
 	return markers;
 }
 
-bool DatabaseMarker::deletePathMarkers(int path_id) {
+bool DBMarker::deletePathMarkers(int path_id) {
 	bool success = false;
 	QSqlQuery q;
 	q.prepare(deleteMarkerPathStr);

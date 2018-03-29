@@ -56,7 +56,7 @@ MenuBar {
         id: dbPaths
         title: qsTr("Load Path")
         Component.onCompleted: {
-            menuHelper.addToLoadPaths(DatabaseMarkerPath.readAllPaths())
+            menuHelper.addToLoadPaths(DBPath.readAllPaths())
         }
     }
 

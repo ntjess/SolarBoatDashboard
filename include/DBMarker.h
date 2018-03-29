@@ -1,5 +1,5 @@
-#ifndef DATABASEMARKER_H
-#define DATABASEMARKER_H
+#ifndef DBMarker_H
+#define DBMarker_H
 #include <QSqlQuery>
 #include <QString>
 #include <string>
@@ -7,7 +7,7 @@
 #include <QObject>
 
 
-class DatabaseMarker : public QObject {
+class DBMarker : public QObject {
 	Q_OBJECT
 public:
 	// It seems to make the most sense to create/delete markers as paths. At
@@ -27,16 +27,16 @@ public:
 
 private:
 	const QString TABLE = "markers";
-	const QString createMarkerStr = "INSERT INTO " + DatabaseMarker::TABLE
+	const QString createMarkerStr = "INSERT INTO " + DBMarker::TABLE
 		+ " (path_id, lat, lon, marker_num) VALUES "
 		"(?, ?, ?, ?)";
 	// There shouldn't be a reason to just grab one marker
-	const QString readPathMarkersStr = "SELECT * FROM " + DatabaseMarker::TABLE
+	const QString readPathMarkersStr = "SELECT * FROM " + DBMarker::TABLE
 			+ " WHERE path_id = :path_id";
-	const QString updateMarkerStr = "UPDATE " + DatabaseMarker::TABLE
+	const QString updateMarkerStr = "UPDATE " + DBMarker::TABLE
 			+ " set lat = :lat, lon = :lon, marker_num = :marker_num";
-	const QString deleteMarkerPathStr = "DELETE FROM " + DatabaseMarker::TABLE
+	const QString deleteMarkerPathStr = "DELETE FROM " + DBMarker::TABLE
 			+ " WHERE path_id = (:path_id)";
 
 };
-#endif // DATABASEMARKER_H
+#endif // DBMarker_H

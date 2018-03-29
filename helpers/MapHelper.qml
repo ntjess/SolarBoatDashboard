@@ -97,8 +97,7 @@ Item {
         }
     }
     function loadPath(pathId) {
-        var newMarkers = DatabaseMarker.readPathMarkers(pathId)
-        // Order list by marker number
+        var newMarkers = DBMarker.readPathMarkers(pathId)
         console.log(newMarkers)
         newMarkers.sort(function (x, y) {
             return x[2] - y[2]
@@ -121,7 +120,7 @@ Item {
             lat.push(markerCoords[i].latitude)
             marker_num.push(Number(i) + 1)
         }
-        return DatabaseMarkerPath.createPath(pathName, lat, lon, marker_num)
+        return DBPath.createPath(pathName, lat, lon, marker_num)
     }
 
     function updateDistance(isCircularRace) {

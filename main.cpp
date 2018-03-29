@@ -4,9 +4,9 @@
 
 //Local includes
 #include "include/CANInterface.h"
-#include "include/DatabaseConnection.h"
-#include "include/DatabaseMarker.h"
-#include "include/DatabaseMarkerPath.h"
+#include "include/DBConnection.h"
+#include "include/DBMarker.h"
+#include "include/DBPath.h"
 
 int main(int argc, char *argv[])
 {
@@ -17,14 +17,14 @@ int main(int argc, char *argv[])
     QGuiApplication app(argc, argv);
     QQmlApplicationEngine engine;
 
-		DatabaseMarkerPath * dbMarkerPath = new DatabaseMarkerPath;
-		DatabaseMarker *dbMarker = new DatabaseMarker;
+		DBPath * dbMarkerPath = new DBPath;
+		DBMarker *dbMarker = new DBMarker;
 
 		// Allow QML to access necessary C++ classes
-		engine.rootContext()->setContextProperty("DatabaseMarkerPath", dbMarkerPath);
-		engine.rootContext()->setContextProperty("DatabaseMarker", dbMarker);
+		engine.rootContext()->setContextProperty("DBPath", dbMarkerPath);
+		engine.rootContext()->setContextProperty("DBMarker", dbMarker);
 		// Create a database connection
-		DatabaseConnection *dbcon = new DatabaseConnection();
+		DBConnection *dbcon = new DBConnection();
 		dbcon->initConnection();
 
 

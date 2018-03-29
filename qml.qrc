@@ -19,13 +19,11 @@
         <file>src/canBus.cpp</file>
         <file>src/CANInterface.cpp</file>
         <file>src/canSocket.cpp</file>
-        <file>src/DatabaseConnection.cpp</file>
+        <file>src/DBConnection.cpp</file>
         <file>src/dataprocessor.cpp</file>
-        <file>src/DatabaseMarker.cpp</file>
-        <file>include/DatabaseMarker.h</file>
-        <file>include/DatabaseMarkerPath.h</file>
-        <file>include/DatabaseConnection.h</file>
-        <file>src/DatabaseMarkerPath.cpp</file>
+        <file>include/DBMarker.h</file>
+        <file>include/DBPath.h</file>
+        <file>include/DBConnection.h</file>
         <file>menus/IdAction.qml</file>
         <file>helpers/MapHelper.qml</file>
         <file>dialogs/DeleteDialog.qml</file>
@@ -36,5 +34,8 @@
         <file>dialogs/CustomTextInput.qml</file>
         <file>dialogs/RaceSettingsPopup.qml</file>
         <file>helpers/InfoHelper.qml</file>
+        <file>src/DBConnection.cpp</file>
+        <file>src/DBMarker.cpp</file>
+        <file>src/DBPath.cpp</file>
     </qresource>
 </RCC>

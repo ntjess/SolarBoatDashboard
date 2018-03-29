@@ -18,9 +18,9 @@ DESTDIR = $$PWD
 
 SOURCES += \
     main.cpp \
-    src/DatabaseConnection.cpp \
-    src/DatabaseMarker.cpp \
-    src/DatabaseMarkerPath.cpp
+    src/DBConnection.cpp \
+    src/DBMarker.cpp \
+    src/DBPath.cpp
 
 OTHER_FILES += main.qml \
 dialogs/*.qml \
@@ -48,6 +48,6 @@ DISTFILES += \
     res/sampleData/output.nmea
 
 HEADERS += \
-    include/DatabaseMarker.h \
-    include/DatabaseConnection.h \
-    include/DatabaseMarkerPath.h
+    include/DBConnection.h \
+    include/DBMarker.h \
+    include/DBPath.h

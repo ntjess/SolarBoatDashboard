@@ -14,7 +14,7 @@ int DatabaseMarkerPath::createPath(QString pathName, QVariantList lat, QVariantL
 
 	if (q.exec()) {
 		pathId = q.lastInsertId().toInt();
-		DatabaseMarker m;
+		DBMarker m;
 		// Each specified marker needs the same path. Create an array of them.
 		QVariantList pathIds;
 		for (int i = 0; i < marker_num.length(); i++) {
@@ -29,16 +29,16 @@ int DatabaseMarkerPath::createPath(QString pathName, QVariantList lat, QVariantL
 	}
 }
 
-bool DatabaseMarkerPath::readPath(int id) {
+bool DBPath::readPath(int id) {
 return false;
 }
 
-bool DatabaseMarkerPath::updatePath(int id) {
+bool DBPath::updatePath(int id) {
 return false;
 }
 
-bool DatabaseMarkerPath::deletePath(int id) {
-	DatabaseMarker m;
+bool DBPath::deletePath(int id) {
+	DBMarker m;
 	// First, try to delete the markers associated with the path
 	bool success = m.deletePathMarkers(id);
 	// Only delete the path from the id list if it was successful
@@ -62,7 +62,7 @@ bool DatabaseMarkerPath::deletePath(int id) {
 	}
 }
 
-QVariantList DatabaseMarkerPath::readAllPaths() {
+QVariantList DBPath::readAllPaths() {
 	// Need to put ids and names into one list to return
 	QVariantList toReturn, ids, names;
 
@@ -85,7 +85,7 @@ QVariantList DatabaseMarkerPath::readAllPaths() {
 	return toReturn;
 }
 
-//QVariantList DatabaseMarkerPath::test() {
+//QVariantList DBPath::test() {
 //	QSqlQuery q = database.exec("SELECT * FROM marker_paths");
 //	if(!q.lastError().isValid())
 //	{

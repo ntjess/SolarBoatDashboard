@@ -20,7 +20,7 @@ MenuItem {
         }
     }
     function deletePaths() {
-        var success = DatabaseMarkerPath.deletePath(actionId)
+        var success = DBPath.deletePath(actionId)
         if (!success) {
             console.log("Delete failed.")
         } else {

@@ -1,5 +1,5 @@
-#ifndef DatabaseMarkerPath_H
-#define DatabaseMarkerPath_H
+#ifndef DBPath_H
+#define DBPath_H
 #include <QSqlQuery>
 #include <QString>
 #include <string>
@@ -7,10 +7,10 @@
 #include <QObject>
 
 
-class DatabaseMarkerPath : public QObject {
+class DBPath : public QObject {
 	Q_OBJECT
 public:
-//	explicit DatabaseMarkerPath(QObject* parent = nullptr) : QObject(parent) {}
+//	explicit DBPath(QObject* parent = nullptr) : QObject(parent) {}
 
 	// Returns id of created path
 	Q_INVOKABLE int createPath(QString pathName, QVariantList lat, QVariantList lon,
@@ -25,15 +25,15 @@ public:
 private:
 	// SQL strings to create database objects
 	const QString TABLE = "marker_paths";
-	const QString createPathStr = "INSERT INTO " + DatabaseMarkerPath::TABLE
+	const QString createPathStr = "INSERT INTO " + DBPath::TABLE
 		+ " (name) VALUES (?)";
-	const QString readPathsStr = "SELECT * FROM" + DatabaseMarkerPath::TABLE
+	const QString readPathsStr = "SELECT * FROM" + DBPath::TABLE
 			+ " WHERE path_id = :path_id";
-	const QString updatePathStr = "UPDATE" + DatabaseMarkerPath::TABLE
+	const QString updatePathStr = "UPDATE" + DBPath::TABLE
 			+ " SET lat = :lat, lon = :lon, marker_num = :marker_num";
-	const QString deletePathStr = "DELETE FROM " + DatabaseMarkerPath::TABLE
+	const QString deletePathStr = "DELETE FROM " + DBPath::TABLE
 			+ " WHERE id = (:id)";
-	const QString readAllPathsStr = "SELECT * FROM " + DatabaseMarkerPath::TABLE;
+	const QString readAllPathsStr = "SELECT * FROM " + DBPath::TABLE;
 };
 
-#endif // DatabaseMarkerPath_H
+#endif // DBPath_H

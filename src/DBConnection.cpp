@@ -1,10 +1,10 @@
-#include "include/databaseConnection.h"
+#include "include/DBConnection.h"
 
 
-DatabaseConnection::DatabaseConnection() {
+DBConnection::DBConnection() {
 }
 
-void DatabaseConnection::initConnection(const QString &path) {
+void DBConnection::initConnection(const QString &path) {
 	database = QSqlDatabase::addDatabase("QSQLITE");
 	database.setDatabaseName(path);
 	if (!database.open()) {
@@ -14,10 +14,10 @@ void DatabaseConnection::initConnection(const QString &path) {
 	}
 }
 
-void DatabaseConnection::closeConnection() {
+void DBConnection::closeConnection() {
 	database.close();
 }
 
-bool DatabaseConnection::isConnected() {
+bool DBConnection::isConnected() {
 	return database.isOpen();
 }
