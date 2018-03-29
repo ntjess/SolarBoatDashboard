@@ -48,3 +48,4 @@ CMakeLists.txt.user*
 # My additions
 /release
 *.exe*
+/.vscode
