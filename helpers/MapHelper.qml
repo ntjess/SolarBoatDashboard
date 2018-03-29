@@ -31,12 +31,15 @@ Item {
         gpsData.active = true
     }
 
-    function addMarker(coords) {
+    function addMarker(coords, isGuide) {
+        // isGuide will default to false if not provided
+        isGuide = isGuide || false;
         map.numMarkers++
         var marker = Qt.createQmlObject('import "../map"; Marker {}', map)
         map.addMapItem(marker)
         marker.z = map.z + 1
         marker.coordinate = coords
+        marker.isGuide = isGuide;
         markerCoords.push(coords)
 
         map.markers.push(marker)
@@ -98,15 +101,16 @@ Item {
     }
     function loadPath(pathId) {
         var newMarkers = DBMarker.readPathMarkers(pathId)
-        console.log(newMarkers)
+        // Order list by marker number, which is the third column returned
         newMarkers.sort(function (x, y) {
-            return x[2] - y[2]
+            return x[3] - y[3]
         })
         // Clean out markers already on map
         deleteAllMarkers()
         for (var i in newMarkers) {
             addMarker(QtPositioning.coordinate(newMarkers[i][0],
-                                               newMarkers[i][1]))
+                                               newMarkers[i][1]),
+                      newMarkers[i][2])
         }
     }
 
@@ -114,13 +118,15 @@ Item {
         // Put each portion of the current markers in a list to add them to db
         var lat = []
         var lon = []
+        var is_guide = []
         var marker_num = []
         for (var i in markerCoords) {
             lon.push(markerCoords[i].longitude)
             lat.push(markerCoords[i].latitude)
+            is_guide.push(map.markers[i].isGuide)
             marker_num.push(Number(i) + 1)
         }
-        return DBPath.createPath(pathName, lat, lon, marker_num)
+        return DBPath.createPath(pathName, lat, lon, is_guide, marker_num)
     }
 
     function updateDistance(isCircularRace) {
@@ -248,7 +254,8 @@ Item {
         var totDist = 0
         var curDist = gpsData.position.coordinate.distanceTo(
                     markerCoords[map.curTarget])
-        var curIdx // This gets hoisted anyway, so just declare it here
+        var curIdx
+        // This gets hoisted anyway, so just declare it here
         // Simply check all markers in a circle to see if they are guides
         var end = map.numMarkers + map.curTarget
         for (var i = map.curTarget; i < end; i++) {

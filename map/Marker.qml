@@ -88,12 +88,6 @@ MapQuickItem {
 
             onPressAndHold: {
                 marker.isGuide = !marker.isGuide
-                if (marker.isGuide) {
-                    image.source = "../res/dirMarker.png"
-                } else {
-                    image.source = "../res/marker.png"
-                }
-                image.update()
             }
         }
 
@@ -114,5 +108,14 @@ MapQuickItem {
         Component.onCompleted: coordinate = map.toCoordinate(
                                    Qt.point(markerMouseArea.mouseX,
                                             markerMouseArea.mouseY))
+    }
+
+    onIsGuideChanged: {
+        if (marker.isGuide) {
+            image.source = "../res/dirMarker.png"
+        } else {
+            image.source = "../res/marker.png"
+        }
+        image.update()
     }
 } //! [mqi-close]

@@ -4,7 +4,7 @@
 #include <QVariantList>
 
 bool DBMarker::createPathMarkers(QVariantList path_id, QVariantList lat,
-												QVariantList lon, QVariantList marker_num) {
+		QVariantList lon, QVariantList is_guide, QVariantList marker_num) {
 	bool success = false;
 	QSqlQuery q;
 	q.prepare(createMarkerStr);
@@ -13,6 +13,7 @@ bool DBMarker::createPathMarkers(QVariantList path_id, QVariantList lat,
 	q.addBindValue(path_id);
 	q.addBindValue(lat);
 	q.addBindValue(lon);
+	q.addBindValue(is_guide);
 	q.addBindValue(marker_num);
 	if (q.execBatch()) {
 		success = true;
@@ -31,9 +32,10 @@ QVariantList DBMarker::readPathMarkers(int path_id) {
 	q.addBindValue(path_id);
 	if (q.exec()) {
 		while (q.next()) {
-			markerData << q.value(2).toDouble();
-			markerData << q.value(3).toDouble();
-			markerData << q.value(4).toInt();
+			markerData << q.value(2).toDouble(); // lat
+			markerData << q.value(3).toDouble(); // lon
+			markerData << q.value(4).toInt(); // is_guide
+			markerData << q.value(5).toInt(); // marker_num
 			markers << QVariant(markerData);
 			markerData.clear();
 		}

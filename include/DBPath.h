@@ -14,7 +14,7 @@ public:
 
 	// Returns id of created path
 	Q_INVOKABLE int createPath(QString pathName, QVariantList lat, QVariantList lon,
-														 QVariantList marker_num);
+														 QVariantList is_guide, QVariantList marker_num);
 	Q_INVOKABLE bool readPath(int id);
 	Q_INVOKABLE bool updatePath(int id);
 	Q_INVOKABLE bool deletePath(int id);
@@ -30,7 +30,7 @@ private:
 	const QString readPathsStr = "SELECT * FROM" + DBPath::TABLE
 			+ " WHERE path_id = :path_id";
 	const QString updatePathStr = "UPDATE" + DBPath::TABLE
-			+ " SET lat = :lat, lon = :lon, marker_num = :marker_num";
+			+ " SET lat = :lat, lon = :lon, is_guide = :is_guide, marker_num = :marker_num";
 	const QString deletePathStr = "DELETE FROM " + DBPath::TABLE
 			+ " WHERE id = (:id)";
 	const QString readAllPathsStr = "SELECT * FROM " + DBPath::TABLE;

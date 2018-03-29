@@ -2,11 +2,11 @@
 #include <QSqlError>
 #include <QSqlRecord>
 
-#include "include/DatabaseMarkerPath.h"
-#include "include/DatabaseMarker.h"
+#include "include/DBPath.h"
+#include "include/DBMarker.h"
 
-int DatabaseMarkerPath::createPath(QString pathName, QVariantList lat, QVariantList lon,
-																	 QVariantList marker_num) {
+int DBPath::createPath(QString pathName, QVariantList lat, QVariantList lon,
+																	 QVariantList is_guide, QVariantList marker_num) {
 	int pathId = -1;
 	QSqlQuery q;
 	q.prepare(createPathStr);
@@ -20,7 +20,7 @@ int DatabaseMarkerPath::createPath(QString pathName, QVariantList lat, QVariantL
 		for (int i = 0; i < marker_num.length(); i++) {
 			pathIds << pathId;
 		}
-		m.createPathMarkers(pathIds, lat, lon, marker_num);
+		m.createPathMarkers(pathIds, lat, lon, is_guide, marker_num);
 		return pathId;
 	} else {
 		// Indicate creation was unsuccessful
