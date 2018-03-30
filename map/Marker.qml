@@ -89,6 +89,8 @@ MapQuickItem {
             onPressAndHold: {
                 marker.isGuide = !marker.isGuide
             }
+
+            drag.onActiveChanged: map.helper.updateCoords(number.text)
         }
 
         Text {
@@ -105,9 +107,10 @@ MapQuickItem {
         }
 
         //! [mqi-closeimage]
-        Component.onCompleted: coordinate = map.toCoordinate(
-                                   Qt.point(markerMouseArea.mouseX,
-                                            markerMouseArea.mouseY))
+        Component.onCompleted: {
+            coordinate = map.toCoordinate(Qt.point(markerMouseArea.mouseX,
+                                                   markerMouseArea.mouseY))
+        }
     }
 
     onIsGuideChanged: {
@@ -118,4 +121,5 @@ MapQuickItem {
         }
         image.update()
     }
+
 } //! [mqi-close]

@@ -27,6 +27,13 @@ Item {
         mapLinePath.path = pathCoords
     }
 
+    function updateCoords(markerNumber) {
+        // Number is 1-based, index is 0-based
+        var idx = Number(markerNumber) - 1
+        markerCoords[idx] = map.markers[idx].coordinate
+        updateRoute()
+    }
+
     function activateGps() {
         gpsData.active = true
     }
