@@ -44,7 +44,7 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 DISTFILES += \
-    res/database/paths.db \
+		res/database/solar_boat.db \
     res/sampleData/output.nmea
 
 HEADERS += \

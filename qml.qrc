@@ -15,7 +15,6 @@
         <file>include/CANInterface.h</file>
         <file>include/CanNodeParser.h</file>
         <file>include/canSocket.h</file>
-        <file>res/database/paths.db</file>
         <file>src/canBus.cpp</file>
         <file>src/CANInterface.cpp</file>
         <file>src/canSocket.cpp</file>
@@ -36,5 +35,6 @@
         <file>src/DBConnection.cpp</file>
         <file>src/DBMarker.cpp</file>
         <file>src/DBPath.cpp</file>
+        <file>res/database/solar_boat.db</file>
     </qresource>
 </RCC>
