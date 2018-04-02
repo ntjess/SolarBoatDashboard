@@ -4,13 +4,15 @@
 DBConnection::DBConnection() {
 }
 
-void DBConnection::initConnection(const QString &path) {
-	database = QSqlDatabase::addDatabase("QSQLITE");
-	database.setDatabaseName(path);
+void DBConnection::initConnection() {
+    QDir dir("res/database/");
+    QString dbFile = dir.absoluteFilePath("solar_boat.db");
+    database = QSqlDatabase::addDatabase("QSQLITE");
+    database.setDatabaseName(dbFile);
 	if (!database.open()) {
 		qDebug() << "Error: " << database.lastError().text();
 	} else {
-		qDebug() << "Successful conenction to " << path << endl;
+        qDebug() << "Successful conenction to " << dbFile << endl;
 	}
 }
 
