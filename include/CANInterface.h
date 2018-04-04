@@ -11,10 +11,8 @@
 #include <QTextStream>
 #include <QDebug>
 #include <QStringList>
+#include <cmath>
 #include <functional>
-
-//Local Includes
-#include "DataProcessor.h"
 #include "canBus.h"
 #include "canSocket.h"
 
@@ -25,14 +23,18 @@ class CANInterface : public QObject
 {
     Q_OBJECT
 public:
-    explicit CANInterface(DataProcessor *dataProcessor, bool simulateInput);
+    explicit CANInterface(bool simulateInput);
     ~CANInterface();
     bool startListening(); //Start listening to the activity on the CAN bus.
     void stopListening();  //Stop listening to the CAN bus.
     bool writeCANFrame(int ID, QByteArray payload);
 
 private Q_SLOTS:
+
+#if defined(Q_OS_ANDROID) || defined(Q_OS_LINUX)
     void readFrame(can_frame frame);
+#endif
+
     void simulateInputFrames();
 
 private:
@@ -40,11 +42,6 @@ private:
     bool slcandActive;
     bool simulateInput;
     QTimer *simulationTimer;
-    // Create class to format CAN data appropriately
-    //routeCANFrame(can_frame frame)
-    // To get simulation working, modify:
-    //simulateInputFrames
-    DataProcessor *dataProcessor;
     bool activateSlcand();
     bool disableSlcand();
 

@@ -1,6 +1,9 @@
 #pragma once
 
-#ifdef Q_OS_ANDROID
+/*QT Includes*/
+#include <QtGlobal>
+
+#if defined(Q_OS_ANDROID) || defined(Q_OS_LINUX)
 /*Linux includes*/
 #include <sys/ioctl.h>
 #include <net/if.h>
@@ -18,29 +21,29 @@
 #include <thread>
 #include <map>
 
+
+
 /*Local includes*/
 #include "canSocket.h"
 
 class CanBusModule
 {
 public:
-
-	/** IModuleInterface implementation */
     virtual void StartupModule();
     virtual void ShutdownModule();
-
-	/** For callbacks that a UObject has sent us we should add them to the vector of callbacks the thread has to deal with. */
-	static bool registerCallback(std::string name, std::function<void(can_frame)> callback);
-
-	//CAN bus interface.
-	bool isOpen();
-	bool sendFrame(int id, int data[], int size);
+#if defined(Q_OS_ANDROID) || defined(Q_OS_LINUX)
+    static bool registerCallback(std::string name, std::function<void(can_frame)> callback);
+#endif
+    //CAN bus interface.
+    bool isOpen();
+    bool sendFrame(int id, int data[], int size);
+#if defined(Q_OS_ANDROID) || defined(Q_OS_LINUX)
     bool sendFrame(can_frame frame);
+#endif
     bool sendErrorFrame(int id, int data[], int size);
 
 private:
-    std::thread thread;
-	CANSocket* can;
+    int threadID;
 };
 
 

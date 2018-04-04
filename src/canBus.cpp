@@ -1,26 +1,15 @@
-#include "include/canBus.h"
+#include "../include/canBus.h"
 
-/*
-* This code will execute after your module is loaded into memory; the exact timing is specified in the .uplugin file per-module
-*/
 void CanBusModule::StartupModule()
 {
-    can = new CANSocket("can0");
-	//Now we should try to connect to the CAN bus.
-    can->Init();
-    thread = std::thread(CANSocket::Run);
+    threadID = CANSocket::Init("can0");
 }
 
-/* This function may be called during shutdown to clean up your module.  For modules that support dynamic reloading,
-* we call this function before unloading the module.
-*/
 void CanBusModule::ShutdownModule()
 {
-    can->Stop();
-    thread.join();
+    CANSocket::Stop(threadID);
 }
 
-/** For callbacks that a UObject has sent us we should add them to the vector of callbacks the thread has to deal with. */
 bool CanBusModule::registerCallback(std::string name, std::function<void(can_frame)> callback)
 {
 	CANSocket::callbacks.insert(std::pair<std::string, std::function<void(can_frame)>>(name, callback));
@@ -29,11 +18,12 @@ bool CanBusModule::registerCallback(std::string name, std::function<void(can_fra
 
 bool CanBusModule::isOpen()
 {
-	return true;
+    return CANSocket::isOpen(threadID);
 }
 
 bool CanBusModule::sendFrame(int id, int data[], int size)
 {
+#if defined(Q_OS_ANDROID) || defined(Q_OS_LINUX)
     if (size > 8) {
         //You're an idiot
         return false;
@@ -48,11 +38,13 @@ bool CanBusModule::sendFrame(int id, int data[], int size)
     }
 
     return sendFrame(cf);
+#endif
+    return false;
 }
 
 bool CanBusModule::sendFrame(can_frame frame)
 {
-    return can->sendFrame(frame);
+    return CANSocket::sendFrame(frame, threadID);
 }
 
 bool CanBusModule::sendErrorFrame(int id, int data[], int size)
