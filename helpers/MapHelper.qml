@@ -170,9 +170,16 @@ Item {
         // Find remaining distance in current lap
         totDist += getLapDist(false)
 
+        // Separate logic to determine whether the user should be able to increment
+        // the current target. This should be allowable as long as there is at
+        // least one more marker
+        info.helper.canIncTarget = (totDist > 0)
+
+
         // This will happen if GPS is close to another marker and there is still at least
         // one more waypoint past the objective
         if (totDist != 0 && curDist < map.distanceThreshold) {
+
             // This will account for lap wrap around when we just finished
             // another lap.
             if (map.curTarget === 0) {

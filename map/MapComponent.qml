@@ -35,6 +35,8 @@ Map {
     // Expose the map helper to other qml components
     property alias helper: mapHelper
 
+    id: map
+
     plugin: Plugin {
         name: "osm"
     }
