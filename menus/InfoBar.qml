@@ -14,7 +14,6 @@ Rectangle {
 
     id: info
     color: "light grey"
-    property alias skipCurTargetButton: skipCurTargetButton
     width: parent.width
     height: 50
 
@@ -50,9 +49,10 @@ Rectangle {
 
     Button {
         id: skipCurTargetButton
-        enabled: infoHelper.canIncTarget
+        visible: infoHelper.canIncTarget
         anchors.right: parent.right
         anchors.rightMargin: 10
+        anchors.topMargin: 5
         // Needed to make text white
         contentItem: Text {
             color: "white"
@@ -63,13 +63,13 @@ Rectangle {
             color: "light green"
             radius: 5
         }
-        onPressed: infoHelper.incCurTarget()
+        onPressed: infoHelper.forceInc = true
     }
 
     Text {
-        enabled: infoHelper.canIncTarget
+        visible: infoHelper.canIncTarget
         id: curTargetTxt
-        text: "Current target: " + map.curTarget
+        text: "Current target: " + (Number(map.curTarget) + 1)
         anchors.top: skipCurTargetButton.bottom
         anchors.right: skipCurTargetButton.right
         font.pointSize: 14

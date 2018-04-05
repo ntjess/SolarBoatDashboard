@@ -3,7 +3,8 @@ import QtQuick.Controls 2.3
 import QtQuick.Dialogs 1.2
 
 Item {
-    property bool canIncTarget: true
+    property bool canIncTarget: false
+    property bool forceInc: false
     function updateTexts(done, nextGuideDist, remainingDist, speed) {
         setNextMarker(done, nextGuideDist)
         setDistanceRemaining(done, remainingDist)
@@ -30,11 +31,4 @@ Item {
     function setVelocity(done, speed) {
         info.velocityTxt = done ? "DONE!" : "Velocity: " + speed + " m/s"
     }
-
-    function incCurTarget() {
-        if (canIncTarget) {
-            map.curTarget = (map.curTarget + 1) % map.numMarkers
-        }
-    }
-
 }
