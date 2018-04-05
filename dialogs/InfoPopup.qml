@@ -3,36 +3,34 @@ import QtQuick.Controls 2.3
 import QtQuick.Dialogs 1.2
 
 Popup {
-    property var options: ["Speed", "Time", "Laps Completed", "Laps Remaining"]
+    property var options: ["Speed", "Time", "Laps Completed", "Laps Remaining",
+        "Distance Remaining", "Distance Covered"]
 
     width: 500 //root.width
-    height: 500 //root.height - appMainMenu.height - info.height
-    x: info.x
-    margins: info.height + appMainMenu.height
+    height: root.height - appMainMenu.height - info.height
+    leftMargin: Math.floor((root.width - infoPopup.width) / 2)
+    topMargin: appMainMenu.height
     modal: true
     focus: true
 
     closePolicy: Popup.CloseOnPressOutside | Popup.CloseOnEscape
-    Column {
-        Repeater {
-            height: 400
-            width: 400
-            model: options
-            clip: true
-            delegate: optionDelegate
-        }
+    // Populates a popup of information the user can choose to see
+    GridView {
+        anchors.fill: parent
+        anchors.centerIn: parent
+        cellWidth: 150
+        cellHeight: 50
+        model: options
+        clip: true
 
-        Component {
-            id: optionDelegate
+        delegate: optionDelegate
+    }
 
-            Rectangle {
-                color: "green"
-                height: 50
-                width: 50
-                Text {
-                    text: modelData + " Test"
-                }
-            }
+    Component {
+        id: optionDelegate
+
+        CheckBox {
+            text: modelData
         }
     }
 }
