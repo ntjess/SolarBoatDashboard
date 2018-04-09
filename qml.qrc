@@ -33,6 +33,6 @@
         <file>src/DBMarker.cpp</file>
         <file>src/DBPath.cpp</file>
         <file>res/database/solar_boat.db</file>
-        <file>menus/RaceType.qml</file>
+        <file>map/RaceType.qml</file>
     </qresource>
 </RCC>
