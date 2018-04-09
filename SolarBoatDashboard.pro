@@ -19,6 +19,9 @@ DESTDIR = $$PWD
 SOURCES += \
     main.cpp \
     src/DBConnection.cpp \
+#		src/canBus.cpp \
+#		src/CANInterface.cpp \
+#		src/canSocket.cpp \
     src/DBMarker.cpp \
     src/DBPath.cpp
 
@@ -50,4 +53,7 @@ DISTFILES += \
 HEADERS += \
     include/DBConnection.h \
     include/DBMarker.h \
-    include/DBPath.h
+		include/DBPath.h \
+#		include/canSocket.h \
+#		include/CANInterface.h \
+#		include/canBus.h
