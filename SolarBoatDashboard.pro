@@ -18,8 +18,9 @@ DESTDIR = $$PWD
 
 SOURCES += \
 		main.cpp \
-		src/DB*.cpp \
-		src/cpp_for_qml/*.cpp
+		src/*.cpp \
+		src/cpp_for_qml/*.cpp \
+    src/CANDisplay.cpp
 OTHER_FILES += main.qml \
 dialogs/*.qml \
 helpers/*.qml \
@@ -43,8 +44,11 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 DISTFILES += \
 		res/database/solar_boat.db \
-    res/sampleData/output.nmea
+    res/sampleData/output.nmea \
+    menus/CanInfoDisplay.qml
 
 HEADERS += \
-		include/DB*.h \
-		include/qml_include/*.h
+		include/*.h \
+		include/qml_include/*.h \
+    include/CANDisplay.h \
+    include/DataProcessor.h
