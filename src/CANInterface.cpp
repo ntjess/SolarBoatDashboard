@@ -1,5 +1,5 @@
 #include "../include/CANInterface.h"
-
+#include <QFile>
 CANInterface::CANInterface(bool simulateInput)
 {
     this->simulateInput = simulateInput;
@@ -109,25 +109,23 @@ void CANInterface::simulateInputFrames()
         if(currentData.wForm == "sin") {
             double d = sin(QDateTime::currentSecsSinceEpoch() % currentData.max);
             simulatedFrame.data[0] = (int) d;
-            dataProcessor->routeCANFrame(simulatedFrame);
+//            dataProcessor->routeCANFrame(simulatedFrame);
         }
         else if(currentData.wForm == "random")
         {
             qsrand(QDateTime::currentMSecsSinceEpoch());
             double d = qrand() % 11;
             simulatedFrame.data[0] = (int) d;
-            dataProcessor->routeCANFrame(simulatedFrame);
+//            dataProcessor->routeCANFrame(simulatedFrame);
         }
     }
 }
 
-#if defined(Q_OS_ANDROID) || defined(Q_OS_LINUX)
 void CANInterface::readFrame(can_frame frame)
   //can_frame is defined in the Android SDK. Contains 32 bit can ID
 {
     //dataProcessor->routeCANFrame(frame);
 }
-#endif
 
 bool CANInterface::activateSlcand()
 {

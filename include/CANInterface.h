@@ -31,9 +31,7 @@ public:
 
 private Q_SLOTS:
 
-#if defined(Q_OS_ANDROID) || defined(Q_OS_LINUX)
     void readFrame(can_frame frame);
-#endif
 
     void simulateInputFrames();
 

@@ -8,6 +8,7 @@
 #include "include/DBMarker.h"
 #include "include/DBPath.h"
 #include "include/qml_include/RaceTypeClass.h"
+#include "include/CANDisplay.h"
 
 int main(int argc, char *argv[])
 {
@@ -16,22 +17,32 @@ int main(int argc, char *argv[])
     QGuiApplication app(argc, argv);
     QQmlApplicationEngine engine;
 
-		DBPath * dbMarkerPath = new DBPath;
-		DBMarker *dbMarker = new DBMarker;
+    CANInterface *can = new CANInterface(false);
 
-		// Allow QML to access necessary C++ classes
-		engine.rootContext()->setContextProperty("DBPath", dbMarkerPath);
-		engine.rootContext()->setContextProperty("DBMarker", dbMarker);
-		// Create a database connection
-		DBConnection *dbcon = new DBConnection();
-		dbcon->initConnection();
+    DBPath * dbMarkerPath = new DBPath;
+    DBMarker *dbMarker = new DBMarker;
 
-        // Allow race type enum in qml
-        RaceTypeClass::init();
+    CANDisplay *canDisplay = new CANDisplay;
+    // Allow QML to access necessary C++ classes
+    engine.rootContext()->setContextProperty("DBPath", dbMarkerPath);
+    engine.rootContext()->setContextProperty("DBMarker", dbMarker);
 
-        engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
+    // Allow QML to access class that interfaces with CAN data
+    engine.rootContext()->setContextProperty("CANDisplay", canDisplay);
+
+    // Create a database connection
+    DBConnection *dbcon = new DBConnection();
+    dbcon->initConnection();
+
+    // Allow race type enum in qml
+    RaceTypeClass::init();
+
+    engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
+
     if (engine.rootObjects().isEmpty())
         return -1;
+
+    can->startListening();
 
     return app.exec();
 }
