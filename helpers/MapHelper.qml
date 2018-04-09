@@ -85,7 +85,7 @@ Item {
         map.numMarkers = 0
         map.markers = newMarkers
         markerCoords = []
-        mapLinePath.enabled = false
+        mapLinePath.visible = false
     }
 
     function toggleMarkers() {
@@ -99,11 +99,11 @@ Item {
     }
 
     function toggleRoute() {
-        if (mapLinePath.enabled == true) {
-            mapLinePath.enabled = false
+        if (mapLinePath.visible == true) {
+            mapLinePath.visible = false
         } else {
             mapHelper.updateRoute()
-            mapLinePath.enabled = true
+            mapLinePath.visible = true
         }
     }
     function loadPath(pathId) {
@@ -137,7 +137,7 @@ Item {
     }
 
     function updateDistance(isCircularRace) {
-        if (!mapLinePath.enabled) {
+        if (!mapLinePath.visible) {
             // No path. Don't calculate anything
             return
         }
@@ -178,7 +178,8 @@ Item {
 
         // This will happen if GPS is close to another marker and there is still at least
         // one more waypoint past the objective
-        if (totDist != 0 && curDist < map.distanceThreshold) {
+        // Alternatively, curMarker should increment if forced from the GUI button
+        if ((totDist != 0 && curDist < map.distanceThreshold) || info.helper.forceInc) {
 
             // This will account for lap wrap around when we just finished
             // another lap.
@@ -206,6 +207,9 @@ Item {
             map.finishedRace = true
             return
         }
+
+        // We don't want to increment curMarker again on the next update
+        info.helper.forceInc = false
 
         totDist += curDist
         // Total distance should now be accurate regardless of whether a new objective was set

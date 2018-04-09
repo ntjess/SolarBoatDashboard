@@ -31,6 +31,10 @@ MenuBar {
         id: settingsPopup
     }
 
+    InfoPopup {
+        id: infoPopup
+    }
+
     Menu {
         id: toolsMenu
         title: qsTr("Path Tools")
@@ -44,11 +48,6 @@ MenuBar {
                 pathNameDialog.open()
                 pathNameDialog.nameStr.focus = true
             }
-        }
-
-        Action {
-            text: qsTr("Track Distance")
-            onTriggered: map.helper.updateDistance(map.isCircularRace)
         }
     }
 
@@ -92,6 +91,10 @@ MenuBar {
             text: qsTr("Race settings")
             onTriggered: settingsPopup.open()
         }
+        Action {
+            text: qsTr("Display Items")
+            onTriggered: infoPopup.open()
+        }
     }
 
     Rectangle {
@@ -120,6 +123,7 @@ MenuBar {
                 map.curTarget = 1
                 map.lapsCompleted = 0
                 map.finishedRace = false
+                map.upDir = true
             }
         }
     }

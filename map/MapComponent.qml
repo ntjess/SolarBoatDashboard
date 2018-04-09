@@ -57,7 +57,7 @@ Map {
     PositionSource {
         id: gpsData
         active: false
-        nmeaSource: "../res/sampleData/output.nmea"
+        nmeaSource: (isCircularRace ? "../res/sampleData/output.nmea" : "../res/sampleData/backForth.nmea")
         updateInterval: 3000 // In milliseconds
         onPositionChanged: {
             if (active && !finishedRace) {
