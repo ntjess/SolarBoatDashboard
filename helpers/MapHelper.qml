@@ -42,13 +42,13 @@ Item {
 
     function addMarker(coords, isGuide) {
         // isGuide will default to false if not provided
-        isGuide = isGuide || false;
+        isGuide = isGuide || false
         map.numMarkers++
         var marker = Qt.createQmlObject('import "../map"; Marker {}', map)
         map.addMapItem(marker)
         marker.z = map.z + 1
         marker.coordinate = coords
-        marker.isGuide = isGuide;
+        marker.isGuide = isGuide
         markerCoords.push(coords)
 
         map.markers.push(marker)
@@ -187,7 +187,8 @@ Item {
         // This will happen if GPS is close to another marker and there is still at least
         // one more waypoint past the objective
         // Alternatively, curMarker should increment if forced from the GUI button
-        if ((totDist != 0 && curDist < map.distanceThreshold) || info.helper.forceInc) {
+        if ((totDist != 0 && curDist < map.distanceThreshold)
+                || info.helper.forceInc) {
 
             // This will account for lap wrap around when we just finished
             // another lap.

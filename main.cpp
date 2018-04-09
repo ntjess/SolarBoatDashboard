@@ -29,7 +29,7 @@ int main(int argc, char *argv[])
         // Allow race type enum in qml
         RaceTypeClass::init();
 
-		engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
+        engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
     if (engine.rootObjects().isEmpty())
         return -1;
 

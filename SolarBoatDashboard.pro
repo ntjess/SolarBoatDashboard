@@ -17,14 +17,9 @@ DEFINES += QT_DEPRECATED_WARNINGS
 DESTDIR = $$PWD
 
 SOURCES += \
-    main.cpp \
-    src/DBConnection.cpp \
-#		src/canBus.cpp \
-#		src/CANInterface.cpp \
-#		src/canSocket.cpp \
-    src/DBMarker.cpp \
-    src/DBPath.cpp
-
+		main.cpp \
+		src/DB*.cpp \
+		src/cpp_for_qml/*.cpp
 OTHER_FILES += main.qml \
 dialogs/*.qml \
 helpers/*.qml \
@@ -51,9 +46,5 @@ DISTFILES += \
     res/sampleData/output.nmea
 
 HEADERS += \
-    include/DBConnection.h \
-    include/DBMarker.h \
-		include/DBPath.h \
-#		include/canSocket.h \
-#		include/CANInterface.h \
-#		include/canBus.h
+		include/DB*.h \
+		include/qml_include/*.h
