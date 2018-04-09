@@ -4,6 +4,7 @@ import QtPositioning 5.6
 import QtQuick.Controls 2.2
 
 import "../helpers"
+import RaceEnum 1.0
 
 Map {
     // Markers
@@ -22,7 +23,7 @@ Map {
     property double speed: 0 // in m/s
 
     // Race setting variables
-    property bool isCircularRace: false
+    property int raceType: RaceType.BACK_FORTH
     property int numLaps: 0
     property int lapsCompleted: 0
     property bool upDir: true
@@ -57,11 +58,11 @@ Map {
     PositionSource {
         id: gpsData
         active: false
-        nmeaSource: (isCircularRace ? "../res/sampleData/output.nmea" : "../res/sampleData/backForth.nmea")
+        nmeaSource: mapHelper.getNewNmeaSrc()
         updateInterval: 3000 // In milliseconds
         onPositionChanged: {
             if (active && !finishedRace) {
-                helper.updateDistance(map.isCircularRace)
+                helper.updateDistance()
                 info.helper.updateTexts(map.finishedRace, map.guideMarkerDist,
                                         map.remainingDistance, position.speed)
             }
@@ -72,7 +73,7 @@ Map {
         }
     }
 
-    onIsCircularRaceChanged: gpsData.nmeaSource = (isCircularRace ? "../res/sampleData/output.nmea" : "../res/sampleData/backForth.nmea")
+    onRaceTypeChanged: gpsData.nmeaSource = mapHelper.getNewNmeaSrc()
 
     CurrentLocation {
     }

@@ -23,7 +23,7 @@ Popup {
                 // TODO: change to enumeration
                 model: ["Back-Forth", "Circular"]
                 onCurrentTextChanged: {
-                    map.isCircularRace = (currentText === "Circular" ? true : false)
+                    map.helper.updateRaceType(currentText)
                     map.helper.updateRoute()
                 }
             }

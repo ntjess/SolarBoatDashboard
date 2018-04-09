@@ -3,6 +3,8 @@ import QtQuick.Controls 2.3
 import QtQuick.Dialogs 1.2
 import QtPositioning 5.8
 
+import RaceEnum 1.0
+
 Item {
     // QML optimizes performances if this is its own variable rather than
     // constantly accessing a subobject of a map object. This gets repopulated
@@ -20,7 +22,7 @@ Item {
             pathCoords.push(markerCoords[i])
         }
         // Complete the loop if this is a circular race
-        if (map.isCircularRace) {
+        if (map.raceType === RaceType.CIRCULAR) {
             pathCoords.push(markerCoords[0])
         }
 
@@ -136,7 +138,7 @@ Item {
         return DBPath.createPath(pathName, lat, lon, is_guide, marker_num)
     }
 
-    function updateDistance(isCircularRace) {
+    function updateDistance() {
         if (!mapLinePath.visible) {
             // No path. Don't calculate anything
             return
@@ -146,12 +148,19 @@ Item {
         // will save from needing if statements later
         var getLapDist
         var distToDirMarker
-        if (map.isCircularRace) {
-            getLapDist = circularLapDist
-            distToDirMarker = circularGuideDist
-        } else {
+        switch (map.raceType) {
+        case RaceType.BACK_FORTH:
             getLapDist = backForthLapDist
             distToDirMarker = backForthGuideDist
+            break
+        case RaceType.CIRCULAR:
+            getLapDist = circularLapDist
+            distToDirMarker = circularGuideDist
+            break
+        case RaceType.START_FINISH:
+            // Do something here when implemented
+            return
+//            break
         }
 
         var totDist = 0
@@ -175,7 +184,6 @@ Item {
         // least one more marker
         info.helper.canIncTarget = (totDist > 0)
 
-
         // This will happen if GPS is close to another marker and there is still at least
         // one more waypoint past the objective
         // Alternatively, curMarker should increment if forced from the GUI button
@@ -187,7 +195,7 @@ Item {
                 map.lapsCompleted++
             }
             //For a back-forth path, change directions if at either bound
-            if (!map.isCircularRace
+            if (map.raceType === RaceType.BACK_FORTH
                     && (map.curTarget === 0
                         || map.curTarget === map.numMarkers - 1)) {
                 // For the back-forth path, this is the time to switch
@@ -381,5 +389,30 @@ Item {
     function setNewTarget(newTarget) {
         map.curTarget = newTarget
         map.updateDistances()
+    }
+
+    function updateRaceType(newRaceType) {
+        switch (newRaceType) {
+        case "Circular":
+            map.raceType = RaceType.CIRCULAR
+            break
+        case "Back-Forth":
+            map.raceType = RaceType.BACK_FORTH
+            break
+        case "Start-Finish":
+            map.raceType = RaceType.START_FINISH
+        }
+    }
+
+    function getNewNmeaSrc() {
+        switch(map.raceType) {
+        case RaceType.CIRCULAR:
+            return "../res/sampleData/output.nmea"
+        case RaceType.BACK_FORTH:
+            return "../res/sampleData/backForth.nmea"
+        case RaceType.START_FINISH:
+            // Put something here eventually
+            return
+        }
     }
 }

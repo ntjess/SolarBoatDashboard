@@ -7,6 +7,7 @@
 #include "include/DBConnection.h"
 #include "include/DBMarker.h"
 #include "include/DBPath.h"
+#include "include/qml_include/RaceTypeClass.h"
 
 int main(int argc, char *argv[])
 {
@@ -25,6 +26,8 @@ int main(int argc, char *argv[])
 		DBConnection *dbcon = new DBConnection();
 		dbcon->initConnection();
 
+        // Allow race type enum in qml
+        RaceTypeClass::init();
 
 		engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
     if (engine.rootObjects().isEmpty())
