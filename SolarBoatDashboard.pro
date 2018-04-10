@@ -16,10 +16,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #Allow QT to accept a relative filepath
 DESTDIR = $$PWD
 
-SOURCES += \
-		main.cpp \
-		src/*.cpp \
-		src/cpp_for_qml/*.cpp
+SOURCES += $$files(src/*.cpp, true)
 OTHER_FILES += main.qml \
 dialogs/*.qml \
 helpers/*.qml \
@@ -46,6 +43,4 @@ DISTFILES += \
     res/sampleData/output.nmea \
     menus/CanInfoDisplay.qml
 
-HEADERS += \
-		include/*.h \
-		include/qml_include/*.h
+HEADERS += $$files(include/*.h, true)
