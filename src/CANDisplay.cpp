@@ -1,6 +1,6 @@
 #include "include/CANDisplay.h"
 
-CANDisplay::CANDisplay(QObject *parent) : QObject(parent) {
+CANDisplay::CANDisplay() {
     // Set variable defaults
 }
 

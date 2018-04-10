@@ -19,8 +19,7 @@ DESTDIR = $$PWD
 SOURCES += \
 		main.cpp \
 		src/*.cpp \
-		src/cpp_for_qml/*.cpp \
-    src/CANDisplay.cpp
+		src/cpp_for_qml/*.cpp
 OTHER_FILES += main.qml \
 dialogs/*.qml \
 helpers/*.qml \
@@ -49,6 +48,4 @@ DISTFILES += \
 
 HEADERS += \
 		include/*.h \
-		include/qml_include/*.h \
-    include/CANDisplay.h \
-    include/DataProcessor.h
+		include/qml_include/*.h

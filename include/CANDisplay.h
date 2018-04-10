@@ -6,7 +6,7 @@
 #include "include/canSocket.h"
 
 
-class CANDisplay : QObject{
+class CANDisplay : public QObject {
 Q_OBJECT
 
 public:
@@ -21,4 +21,4 @@ private:
 
 signals:
     // void signalNameNotify();
-}
+};
