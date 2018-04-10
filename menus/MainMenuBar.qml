@@ -31,10 +31,6 @@ MenuBar {
         id: settingsPopup
     }
 
-    InfoPopup {
-        id: infoPopup
-    }
-
     Menu {
         id: toolsMenu
         title: qsTr("Path Tools")
@@ -93,7 +89,7 @@ MenuBar {
         }
         Action {
             text: qsTr("Display Items")
-            onTriggered: infoPopup.open()
+            onTriggered: info.displayItems.open()
         }
     }
 

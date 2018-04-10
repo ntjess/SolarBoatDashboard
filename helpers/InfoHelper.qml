@@ -14,7 +14,7 @@ Item {
     function setNextMarker(done, dist) {
         if (!done) {
             if (dist >= 0) {
-                info.guideTxt = "Distance to next marker: " + dist
+                info.guideTxt = "Next Guide: " + dist
             } else {
                 info.guideTxt = "No guide marker in place"
             }
@@ -24,7 +24,7 @@ Item {
     }
 
     function setDistanceRemaining(done, dist) {
-         info.remainingDistTxt = done ? "DONE!" : "Total remaining distance: "
+         info.remainingDistTxt = done ? "DONE!" : "Remaining distance: "
                                          + dist + " m"
     }
 
