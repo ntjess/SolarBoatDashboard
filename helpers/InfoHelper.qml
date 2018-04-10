@@ -29,6 +29,7 @@ Item {
     }
 
     function setVelocity(done, speed) {
-        info.velocityTxt = done ? "DONE!" : "Velocity: " + speed + " m/s"
+        // Round to two decimal places
+        info.velocityTxt = done ? "DONE!" : "Velocity: " + Math.round(speed*100)/100 + " m/s"
     }
 }
