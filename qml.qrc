@@ -36,5 +36,6 @@
         <file>dialogs/InfoPopup.qml</file>
         <file>src/cpp_for_qml/RaceTypeClass.cpp</file>
         <file>include/qml_include/RaceTypeClass.h</file>
+        <file>res/sampleData/startFinish.nmea</file>
     </qresource>
 </RCC>

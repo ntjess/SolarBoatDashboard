@@ -158,7 +158,10 @@ Item {
       distToDirMarker = circularGuideDist
       break
     case RaceType.START_FINISH:
-      getLapDist = circularGuideDist
+      // Basically the same as circular, but don't add distance from finish
+      // to first marker
+      getLapDist = circularLapDist
+      distToDirMarker = circularGuideDist
     }
 
     var totDist = 0
@@ -284,14 +287,13 @@ Item {
     var end = map.numMarkers + map.curTarget
     for (var i = map.curTarget; i < end; i++) {
       curIdx = i % map.numMarkers
-      if (map.markers[curIdx].isGuide) {
-        return curDist + totDist
-      }
       // Don't roll over if there are no more laps to complete, or this is
       // a start-finish race
-      if (map.raceType !== RaceType.CIRCULAR
-          || (curIdx === 0 && map.lapsCompleted === map.numLaps - 1)) {
+      if (curIdx === 0 && map.lapsCompleted === map.numLaps - 1) {
         break
+      }
+      if (map.markers[curIdx].isGuide) {
+        return curDist + totDist
       }
 
       totDist += markerCoords[curIdx].distanceTo(
@@ -412,8 +414,7 @@ Item {
     case RaceType.BACK_FORTH:
       return "../res/sampleData/backForth.nmea"
     case RaceType.START_FINISH:
-      // Put something here eventually
-      return
+      return "../res/sampleData/startFinish.nmea"
     }
   }
 }
