@@ -3,39 +3,67 @@ import QtQuick.Controls 2.3
 import QtQuick.Dialogs 1.2
 
 Popup {
-    width: 500 //root.width
-    height: 100 //root.height - appMainMenu.height - info.height
-    x: info.x
-    margins: info.height + appMainMenu.height
-    modal: true
-    focus: true
+  width: 500 //root.width
+  height: 100 //root.height - appMainMenu.height - info.height
+  x: info.x
+  margins: info.height + appMainMenu.height
+  modal: true
+  focus: true
 
-    closePolicy: Popup.CloseOnPressOutside | Popup.CloseOnEscape
+  closePolicy: Popup.CloseOnPressOutside | Popup.CloseOnEscape
 
-    Column {
-        width: parent.width
-        Row {
-            Label {
-                height: parent.height
-                text: qsTr("Race Type: ")
-            }
-            ComboBox {
-                // TODO: change to enumeration
-                model: ["Back-Forth", "Circular"]
-                onCurrentTextChanged: {
-                    map.helper.updateRaceType(currentText)
-                    map.helper.updateRoute()
-                }
-            }
+  Column {
+    width: parent.width
+    Row {
+      Label {
+        height: parent.height
+        text: qsTr("Race Type: ")
+      }
+      ComboBox {
+        id: comboBox
+        // TODO: change to enumeration
+        model: ["Back-Forth", "Circular", "Start-Finish"]
+        onCurrentTextChanged: {
+          map.helper.updateRaceType(currentText)
+          map.helper.updateRoute()
+          // Can't allow more than one lap for start-finish race
+          comboBox.state = currentText
         }
-        Row {
-            Label {
-                height: parent.height
-                text: qsTr("Number of Laps: ")
+        states: [
+          State {
+            name: "Start-Finish"
+            PropertyChanges {
+              target: numInpt
+              txt: "1"
+              txtEnable: false
             }
-            CustomNumberInput {
-                onNumChanged: map.numLaps = num
+          },
+          State {
+            name: "Circular"
+            PropertyChanges {
+              target: numInpt
+              txtEnable: true
             }
-        }
+          },
+          State {
+            name: "Back-Forth"
+            PropertyChanges {
+              target: numInpt
+              txtEnable: true
+            }
+          }
+        ]
+      }
     }
+    Row {
+      Label {
+        height: parent.height
+        text: qsTr("Number of Laps: ")
+      }
+      CustomNumberInput {
+        id: numInpt
+        onNumChanged: map.numLaps = Number(num)
+      }
+    }
+  }
 }

@@ -4,6 +4,8 @@ import QtQuick.Dialogs 1.2
 
 Rectangle {
     property int num: Number(numInpt.displayText)
+    property alias txt: numInpt.text
+    property alias txtEnable: numInpt.readOnly
     height: 25
     width: 50
     color: "white"
