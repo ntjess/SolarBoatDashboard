@@ -1,5 +1,6 @@
 import QtQuick 2.5
 import QtQuick.Controls 2.3
+import QtQuick.Layouts 1.3
 
 import "../helpers/"
 import "../dialogs/"
@@ -8,6 +9,8 @@ Rectangle {
   // Expose helper functions to other qml objects
   property alias helper: infoHelper
   property alias displayItems: infoPopup
+  // hack-ey way of getting at checkboxes in the popup
+  property var checkBoxes: infoPopup.optionGrid.children[0].children
 
   // Allow the helper to modify text strings
   property string guideTxt: "Next Guide: N/A"
@@ -19,8 +22,8 @@ Rectangle {
   id: info
   color: "light grey"
   width: parent.width
-  // Scale height if lots of items are shown
-  height: 50 + (25 * Math.round(infoCount / 4))
+  // Scale height if lots of items are shown. 3 displays per row
+  height: childrenRect.height
 
   InfoHelper {
     id: infoHelper
@@ -30,30 +33,56 @@ Rectangle {
     id: infoPopup
   }
 
-  Text {
-    id: nextGuide
-    anchors.left: parent.left
-    anchors.leftMargin: 10
-    text: guideTxt
-    font.pointSize: 14
-  }
+  GridLayout {
+    id: displayGrid
+    width: parent.width - 100
+    columns: 2
 
-  Text {
-    id: reminingDist
-    anchors.left: nextGuide.right
-    anchors.leftMargin: 10
-    text: remainingDistTxt
-    font.pointSize: 14
-  }
+    Text {
+      text: "DONE!"
+      font.pointSize: 14
+      visible: map.finishedRace
+    }
 
-  Text {
-    id: velocity
-    anchors.left: parent.left
-    anchors.bottom: parent.bottom
-    anchors.bottomMargin: 10
-    anchors.leftMargin: 10
-    text: velocityTxt
-    font.pointSize: 14
+    Text {
+      id: nextGuide
+      text: guideTxt
+      font.pointSize: 14
+
+      visible: checkBoxes[3].checked && !map.finishedRace
+    }
+
+    Text {
+      id: reminingDist
+      text: remainingDistTxt
+      font.pointSize: 14
+
+      visible: checkBoxes[4].checked && !map.finishedRace
+    }
+
+    Text {
+      id: velocity
+      text: velocityTxt
+      font.pointSize: 14
+
+      visible: checkBoxes[0].checked && !map.finishedRace
+    }
+
+    Text {
+      id: lapsCompleted
+      text: "Laps completed: " + map.lapsCompleted
+      font.pointSize: 14
+
+      visible: checkBoxes[1].checked && !map.finishedRace
+    }
+
+    Text {
+      id: lapsRemaining
+      text: "Laps remaining: " + (map.numLaps - map.lapsCompleted - 1)
+      font.pointSize: 14
+
+      visible: checkBoxes[2].checked && !map.finishedRace
+    }
   }
 
   Button {
@@ -76,9 +105,9 @@ Rectangle {
   }
 
   Text {
-    visible: infoHelper.canIncTarget
     id: curTargetTxt
-    text: "Current target: " + (Number(map.curTarget) + 1)
+    visible: infoHelper.canIncTarget
+    text: "Target #: " + (Number(map.curTarget) + 1)
     anchors.top: skipCurTargetButton.bottom
     anchors.right: skipCurTargetButton.right
     font.pointSize: 14

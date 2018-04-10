@@ -24,7 +24,7 @@ Map {
 
     // Race setting variables
     property int raceType: RaceType.BACK_FORTH
-    property int numLaps: 0
+    property int numLaps: 1
     property int lapsCompleted: 0
     property bool upDir: true
 
@@ -63,7 +63,7 @@ Map {
         onPositionChanged: {
             if (active && !finishedRace) {
                 helper.updateDistance()
-                info.helper.updateTexts(map.finishedRace, map.guideMarkerDist,
+                info.helper.updateTexts(map.guideMarkerDist,
                                         map.remainingDistance, position.speed)
             }
             map.speed = position.speed // in m/s
