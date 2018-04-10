@@ -16,7 +16,9 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #Allow QT to accept a relative filepath
 DESTDIR = $$PWD
 
-SOURCES += $$files(src/*.cpp, true)
+SOURCES += \
+main.cpp \
+$$files(src/*.cpp, true)
 OTHER_FILES += main.qml \
 dialogs/*.qml \
 helpers/*.qml \
