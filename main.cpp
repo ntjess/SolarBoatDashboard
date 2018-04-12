@@ -17,18 +17,18 @@ int main(int argc, char *argv[])
     QGuiApplication app(argc, argv);
     QQmlApplicationEngine engine;
 
-    CANInterface *can = new CANInterface(false);
+//		CANInterface *can = new CANInterface();
 
     DBPath * dbMarkerPath = new DBPath;
     DBMarker *dbMarker = new DBMarker;
 
-    CANDisplay *canDisplay = new CANDisplay;
+//    CANDisplay *canDisplay = new CANDisplay;
     // Allow QML to access necessary C++ classes
     engine.rootContext()->setContextProperty("DBPath", dbMarkerPath);
     engine.rootContext()->setContextProperty("DBMarker", dbMarker);
 
     // Allow QML to access class that interfaces with CAN data
-    engine.rootContext()->setContextProperty("CANDisplay", canDisplay);
+//    engine.rootContext()->setContextProperty("CANDisplay", canDisplay);
 
     // Create a database connection
     DBConnection *dbcon = new DBConnection();
@@ -42,7 +42,7 @@ int main(int argc, char *argv[])
     if (engine.rootObjects().isEmpty())
         return -1;
 
-    can->startListening();
+//    can->startListening();
 
     return app.exec();
 }
