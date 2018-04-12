@@ -5,10 +5,15 @@ DBConnection::DBConnection() {
 }
 
 void DBConnection::initConnection() {
-    QDir dir("res/database/");
-    QString dbFile = dir.absoluteFilePath("solar_boat.db");
-    database = QSqlDatabase::addDatabase("QSQLITE");
-    database.setDatabaseName(dbFile);
+	QString dbFile = QDir::currentPath() + "/res/database/solar_boat.db";
+	// Android doesn't allow file modification unless it is a local file
+	if(!QFile::exists(dbFile)) {
+		QFile::copy(QString(":/res/database/solar_boat.db"), dbFile);
+		QFile::setPermissions(dbFile,
+		QFile::ReadOwner|QFile::WriteOwner);
+	}
+	database = QSqlDatabase::addDatabase("QSQLITE");
+	database.setDatabaseName(dbFile);
 	if (!database.open()) {
 		qDebug() << "Error: " << database.lastError().text();
 	} else {
