@@ -13,7 +13,7 @@ class DBConnection {
 public:
 	DBConnection();
 
-    void initConnection();// ":/res/database/paths.db");
+	void initConnection();// ":/res/database/paths.db");
 	void closeConnection();
 	void test() {
 		QSqlQuery q = database.exec("SELECT * FROM markers");
