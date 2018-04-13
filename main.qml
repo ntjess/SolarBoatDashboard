@@ -4,9 +4,9 @@ import QtQuick 2.5
 import QtQuick.Controls 2.3
 import QtLocation 5.6
 
-import "map"
-import "menus"
-import "helpers"
+import "ui/map"
+import "ui/menus"
+import "ui/helpers"
 
 
 ApplicationWindow {

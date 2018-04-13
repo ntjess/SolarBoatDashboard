@@ -20,12 +20,7 @@ SOURCES += \
 main.cpp \
 $$files(src/*.cpp, true)
 OTHER_FILES += main.qml \
-dialogs/*.qml \
-helpers/*.qml \
-menus/*.qml \
-map/*.qml \
-res/*.qml \
-res/*.png
+$$files(ui/*.qml, true) \
 
 RESOURCES += qml.qrc
 
@@ -43,6 +38,7 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 DISTFILES += \
 		res/database/solar_boat.db \
     res/sampleData/output.nmea \
-    menus/CanInfoDisplay.qml
+    menus/CanInfoDisplay.qml \
+    $$files(res/*.png, true)
 
 HEADERS += $$files(include/*.h, true)

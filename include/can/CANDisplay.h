@@ -1,9 +1,9 @@
 #pragma once
 #include <QObject>
 
-#include "include/canBus.h"
-#include "include/CANInterface.h"
-#include "include/canSocket.h"
+#include "include/can/canBus.h"
+#include "include/can/CANInterface.h"
+#include "include/can/canSocket.h"
 
 
 class CANDisplay : public QObject {

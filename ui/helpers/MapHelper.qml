@@ -410,11 +410,11 @@ Item {
   function getNewNmeaSrc() {
     switch (map.raceType) {
     case RaceType.CIRCULAR:
-      return "../res/sampleData/output.nmea"
+      return "../../res/sampleData/output.nmea"
     case RaceType.BACK_FORTH:
-      return "../res/sampleData/backForth.nmea"
+      return "../../res/sampleData/backForth.nmea"
     case RaceType.START_FINISH:
-      return "../res/sampleData/startFinish.nmea"
+      return "../../res/sampleData/startFinish.nmea"
     }
   }
 }

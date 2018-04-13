@@ -1,5 +1,6 @@
-#include "../include/CANInterface.h"
 #include <QFile>
+
+#include "include/can/CANInterface.h"
 CANInterface::CANInterface()
 {
     slcandActive = false;

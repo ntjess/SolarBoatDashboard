@@ -55,6 +55,8 @@ import QtLocation 5.6
 MapQuickItem {
     // Variable to determine which image is used for the created marker
     property bool isGuide: false
+    readonly property string regMarker: "../../res/marker.png"
+    readonly property string dirMarker: "../../res/dirMarker.png"
     // Marker number will change if a marker in the middle of a path is
     // deleted. To track this, make the text a property that other elements
     // can access
@@ -68,7 +70,7 @@ MapQuickItem {
     sourceItem: Image {
         id: image
         //! [mqi-anchor]
-        source: "../res/marker.png"
+        source: regMarker
         opacity: markerMouseArea.pressed ? 0.6 : 1.0
         MouseArea {
             id: markerMouseArea
@@ -115,9 +117,9 @@ MapQuickItem {
 
     onIsGuideChanged: {
         if (marker.isGuide) {
-            image.source = "../res/dirMarker.png"
+            image.source = dirMarker
         } else {
-            image.source = "../res/marker.png"
+            image.source = regMarker
         }
         image.update()
     }

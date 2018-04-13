@@ -1,4 +1,4 @@
-#include "include/CANDisplay.h"
+#include "include/can/CANDisplay.h"
 
 CANDisplay::CANDisplay() {
     // Set variable defaults

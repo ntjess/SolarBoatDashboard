@@ -3,12 +3,12 @@
 #include <QQmlContext>
 
 //Local includes
-#include "include/CANInterface.h"
-#include "include/DBConnection.h"
-#include "include/DBMarker.h"
-#include "include/DBPath.h"
-#include "include/qml_include/RaceTypeClass.h"
-#include "include/CANDisplay.h"
+#include "include/can/CANInterface.h"
+#include "include/db/DBConnection.h"
+#include "include/db/DBMarker.h"
+#include "include/db/DBPath.h"
+#include "include/qml_classes/RaceTypeClass.h"
+#include "include/can/CANDisplay.h"
 
 int main(int argc, char *argv[])
 {

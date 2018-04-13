@@ -2,8 +2,8 @@
 #include <QSqlError>
 #include <QSqlRecord>
 
-#include "include/DBPath.h"
-#include "include/DBMarker.h"
+#include "include/db/DBPath.h"
+#include "include/db/DBMarker.h"
 
 int DBPath::createPath(QString pathName, QVariantList lat, QVariantList lon,
 																	 QVariantList is_guide, QVariantList marker_num) {

@@ -1,4 +1,4 @@
-#include "include/DBConnection.h"
+#include "include/db/DBConnection.h"
 
 
 DBConnection::DBConnection() {

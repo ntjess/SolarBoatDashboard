@@ -1,4 +1,4 @@
-#include "include/qml_include/RaceTypeClass.h"
+#include "include/qml_classes/RaceTypeClass.h"
 #include <QtQml>
 
 RaceTypeClass::RaceTypeClass() {
